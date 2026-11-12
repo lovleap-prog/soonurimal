@@ -1,0 +1,1318 @@
+<meta name="dash-one-writer">
+<style>
+.nk { display: flex; flex-direction: column; gap: var(--cds-gap-xl); max-width: 1120px; margin: 0 auto; }
+.nk p { margin: 0; }
+.nk-head { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.nk-eyebrow { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); letter-spacing: .02em; }
+.nk-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); line-height: 1.25; margin: 0; text-wrap: balance; }
+.nk-lede { font-size: var(--cds-font-size-body); line-height: 1.75; max-width: 70ch; }
+.nk-lede b { font-weight: var(--cds-font-weight-medium); }
+.nk-sample { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); border: 1px dashed var(--color-warn); border-radius: var(--cds-radius); padding: var(--cds-pad-sm) var(--cds-pad-md); max-width: 70ch; line-height: 1.6; }
+.nk-sample strong { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.nk-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm) var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.nk-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); overflow: hidden; }
+.nk-seg button { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); background: transparent; border: 0; padding: 6px 12px; cursor: pointer; }
+.nk-seg button + button { border-left: 1px solid var(--color-border-line); }
+.nk-seg button[aria-pressed="true"] { background: var(--color-panel); color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.nk-seg button:focus-visible { outline: 2px solid var(--color-fg); outline-offset: -2px; }
+.nk-flagnote b { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+
+.nk-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--cds-gap-md); }
+.nk-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.nk-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.nk-tile-body { display: flex; flex-direction: column; gap: 6px; min-height: 58px; }
+.nk-big { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 2rem; line-height: 1.1; font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.nk-unit { font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.nk-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.5; }
+.nk-src { font-size: 11px; color: var(--color-fg-muted); opacity: .8; margin-top: auto; }
+
+.nk-chip { display: inline-block; font-family: var(--font-anthropic-sans); font-size: 11px; line-height: 1; padding: 4px 7px; border-radius: 999px; color: var(--color-fg); white-space: nowrap; vertical-align: middle; }
+.nk-b-vpos { background: color-mix(in srgb, var(--color-ok) 42%, transparent); }
+.nk-b-pos { background: color-mix(in srgb, var(--color-ok) 20%, transparent); }
+.nk-b-mid { background: color-mix(in srgb, var(--color-fg-muted) 14%, transparent); }
+.nk-b-neg { background: color-mix(in srgb, var(--color-bad) 20%, transparent); }
+.nk-b-vneg { background: color-mix(in srgb, var(--color-bad) 42%, transparent); }
+.nk-b-none { background: transparent; color: var(--color-fg-muted); }
+.nk-chip.nk-pass { background: color-mix(in srgb, var(--color-ok) 22%, transparent); }
+.nk-chip.nk-fail-chip { background: color-mix(in srgb, var(--color-warn) 28%, transparent); }
+
+.nk-sec { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.nk-sec > h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; text-wrap: balance; }
+.nk-desc { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); line-height: 1.65; max-width: 72ch; }
+.nk-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--cds-gap-md); }
+.nk-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+.nk-card h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.nk-cap { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.55; }
+.nk-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.nk-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.nk-sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; background: var(--cds-chart-muted); }
+.nk-sw.nk-ring { border-radius: 50%; background: transparent; border: 1.5px solid var(--color-fg); }
+.nk-sw.nk-dot { border-radius: 50%; }
+
+.nk-chart { position: relative; min-height: 120px; }
+.nk-chart svg { display: block; overflow: visible; }
+.nk-chart text { font-size: 12px; fill: var(--cds-text-secondary); font-variant-numeric: tabular-nums; }
+.nk-chart .nk-strong { fill: var(--color-fg); font-weight: 600; }
+.nk-chart .nk-halo { paint-order: stroke; stroke: var(--color-panel); stroke-width: 3px; stroke-linejoin: round; fill: var(--color-fg); }
+.nk-chart .domain, .nk-chart .tick line { stroke: var(--cds-chart-axis); }
+.nk-chart .nk-grid line { stroke: var(--cds-chart-grid); }
+.nk-plot { position: relative; }
+.nk-plot .nk-chart { min-height: 300px; }
+.nk-q { position: absolute; font-size: 11px; color: var(--color-fg-muted); pointer-events: none; background: color-mix(in srgb, var(--color-panel) 80%, transparent); padding: 1px 4px; border-radius: 3px; }
+.nk-q-tl { left: 36px; top: 12px; } .nk-q-tr { right: 16px; top: 12px; }
+.nk-q-bl { left: 36px; bottom: 36px; } .nk-q-br { right: 16px; bottom: 36px; }
+.nk-q-mid { left: 36px; top: 132px; }
+.nk-q-br { color: var(--color-fg); font-weight: 600; }
+.nk-tip { position: absolute; z-index: 5; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 8px 10px; font-size: var(--cds-font-size-caption); line-height: 1.5; min-width: 120px; max-width: 220px; }
+.nk-tip b { display: block; font-weight: var(--cds-font-weight-medium); color: var(--color-fg); margin-bottom: 2px; }
+.nk-tip div { display: flex; justify-content: space-between; gap: 12px; color: var(--cds-text-secondary); }
+.nk-tip div span:last-child { color: var(--color-fg); font-variant-numeric: tabular-nums; }
+.nk-fail { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+
+.nk-dotrow { display: grid; grid-template-columns: minmax(110px, 160px) 1fr; gap: var(--cds-gap-md); align-items: center; }
+.nk-dotrow .nk-chart { min-height: 84px; }
+.nk-dotlabel { display: flex; flex-direction: column; gap: 2px; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.nk-dotlabel small { font-weight: 400; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.4; }
+@media (max-width: 520px) { .nk-dotrow { grid-template-columns: 1fr; gap: 4px; } }
+
+.nk-scroll { overflow-x: auto; }
+.nk-table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.nk-table th { font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); text-align: center; padding: 6px 6px 8px; border-bottom: 1px solid var(--color-border-line); vertical-align: bottom; line-height: 1.3; }
+.nk-table th small { display: block; font-weight: 400; opacity: .75; }
+.nk-table th:first-child, .nk-table td:first-child { text-align: left; }
+.nk-table td { text-align: center; padding: 0; border-bottom: 1px solid var(--color-border-line); height: 36px; }
+.nk-table td.nk-name { font-size: var(--cds-font-size-body); color: var(--color-fg); padding: 0 10px 0 0; white-space: nowrap; }
+.nk-table td.nk-n { color: var(--color-fg-muted); }
+.nk-table td.nk-n.nk-few::after { content: " 적음"; font-size: 10px; color: var(--color-warn); }
+.nk-table td.nk-cell { border-left: 2px solid var(--color-panel); font-size: var(--cds-font-size-body); color: var(--color-fg); min-width: 48px; }
+.nk-table td.nk-sep { border-left: 1px solid var(--color-border-line); }
+.nk-table td.nk-na { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.nk-table td small { color: var(--color-fg-muted); font-size: 10px; margin-left: 3px; }
+.nk-table td.nk-teacher { font-weight: 600; }
+.nk-table td.nk-total { font-weight: 600; }
+.nk-bands { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+
+.nk-open-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm) var(--cds-gap-md); }
+.nk-open-head label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.nk-kw { display: flex; flex-direction: column; gap: 6px; min-height: 60px; }
+.nk-kwrow { display: grid; grid-template-columns: 92px 1fr 34px; gap: 8px; align-items: center; font-size: var(--cds-font-size-caption); }
+.nk-kwrow > span:first-child { color: var(--color-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nk-kwtrack { height: 10px; border-radius: 2px; background: var(--cds-chart-grid); overflow: hidden; }
+.nk-kwbar { height: 100%; border-radius: 2px; }
+.nk-kwrow > span:last-child { text-align: right; color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.nk-quotes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; min-height: 40px; }
+.nk-quotes li { font-size: var(--cds-font-size-body); line-height: 1.55; padding-left: 12px; border-left: 2px solid var(--color-border-line); }
+.nk-quotes li span { display: block; font-size: 11px; color: var(--color-fg-muted); }
+.nk-empty { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+
+.nk-card, .nk-tile { border-radius: calc(var(--cds-radius) * 2.2); }
+.nk-title { font-size: calc(var(--cds-font-size-title) * 1.15); }
+.nk-sec > h2 { display: flex; align-items: center; gap: 10px; }
+.nk-sec > h2::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--color-warn); opacity: .75; flex: none; }
+.nk-feel { gap: var(--cds-gap-lg); }
+.nk-feelrow { display: flex; flex-direction: column; gap: 8px; }
+.nk-feelq { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.nk-feelbody { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; min-height: 22px; }
+.nk-pds { display: inline-flex; flex-wrap: wrap; gap: 5px; }
+.nk-pd { width: 16px; height: 16px; border-radius: 50%; display: block; box-sizing: border-box; }
+.nk-pd-no { border: 1.5px solid var(--color-border-line); background: transparent; }
+.nk-feeltext { font-size: var(--cds-font-size-body); color: var(--color-fg-muted); }
+.nk-feeltext b { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 1.35rem; color: var(--color-fg); font-variant-numeric: tabular-nums; }
+.nk-foot details { border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-md); }
+.nk-foot summary { cursor: pointer; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.nk-foot .nk-method { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--cds-gap-md) var(--cds-gap-xl); margin-top: var(--cds-gap-md); font-size: var(--cds-font-size-caption); line-height: 1.65; color: var(--color-fg-muted); }
+.nk-foot h4 { margin: 0 0 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.nk-foot code { font-size: 11px; background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 3px; padding: 0 4px; }
+.nk-foot ul { margin: 0; padding-left: 18px; }
+
+[data-dash-source-state=refreshing] { opacity: .5; }
+@media (prefers-reduced-motion: no-preference) { .nk-kwbar { transition: width var(--cds-dur-slow) var(--cds-ease-out); } }
+</style>
+
+<div class="nk">
+  <header class="nk-head" id="top">
+    <p class="nk-eyebrow">낙성초등학교 · 방과후학교 인식 설문 · 초3~6 방과후 수강생 · 교원용</p>
+    <h1 class="nk-title">낙성초 방과후, 아이들의 생각</h1>
+    <p class="nk-lede" id="takeaway" lang="ko"><span data-draw="lede-switch"></span><span id="lede-has">방과후 시간 자체에 대한 태도(a1)는 <b data-draw="lede-a1">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 <b>막연한 거부감형</b>은 <b data-draw="lede-vague">—</b>이고, 이 학생들의 피로(a2)는 <b data-draw="lede-a2">—</b>점, 공부 인식(a3)은 <b data-draw="lede-a3">—</b>점으로 <b data-draw="lede-cause">—</b>.</span><span id="lede-none" hidden>방과후 시간 자체에 대한 태도(a1)는 <b data-draw="lede-a1b">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 막연한 거부감형 학생은 없습니다.</span></p>
+    <p class="nk-sample"><strong>시안용 가상 데이터입니다.</strong> 지금 보이는 숫자는 Claude가 만든 테스트 응답(학생 24명, 수업 응답 49건)이며 실제 학생 응답이 아닙니다. 실제 응답이 들어오면 응답 시트를 연결해 모든 숫자를 다시 계산합니다. 이 화면에는 강사 관련 결과가 있으므로 교원끼리만 봅니다.</p>
+    <div class="nk-controls">
+      <div class="nk-seg" role="group" aria-label="점검 플래그가 붙은 응답">
+        <button type="button" id="flag-exclude" data-flag="exclude" aria-pressed="true">플래그 응답 제외</button>
+        <button type="button" id="flag-include" data-flag="include" aria-pressed="false">포함</button>
+      </div>
+      <span class="nk-flagnote" data-draw="flag-note">—</span>
+    </div>
+  </header>
+
+  <section class="nk-sec" id="summary" aria-label="요약">
+    <div class="nk-tiles">
+      <div class="nk-tile" id="tile-students"><div class="nk-tile-label">응답 학생</div><div class="nk-tile-body dash-skeleton" data-draw="t-students">—</div><p class="nk-src">students 시트</p></div>
+      <div class="nk-tile" id="tile-responses"><div class="nk-tile-label">분석한 수업 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-responses">—</div><p class="nk-src">responses 시트 · 학생×수업 1건</p></div>
+      <div class="nk-tile" id="tile-flagged"><div class="nk-tile-label">점검 플래그 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-flagged">—</div><p class="nk-src">모순 응답 · 일자 응답</p></div>
+      <div class="nk-tile" id="tile-a1"><div class="nk-tile-label">방과후 태도 (a1)</div><div class="nk-tile-body dash-skeleton" data-draw="t-a1">—</div><p class="nk-src">“방과후 수업 시간이 있는 것이 좋아요”</p></div>
+      <div class="nk-tile" id="tile-alpha"><div class="nk-tile-label">내적 일관성 α</div><div class="nk-tile-body dash-skeleton" data-draw="t-alpha">—</div><p class="nk-src">q4~q9, q10(역) 7문항 · 기준 .70</p></div>
+      <div class="nk-tile" id="tile-r"><div class="nk-tile-label">수렴타당도 r</div><div class="nk-tile-body dash-skeleton" data-draw="t-r">—</div><p class="nk-src">수업 경험 × q11 전반 만족 · 기준 .60</p></div>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="feel">
+    <h2>방과후 시간, 어떻게 느끼나요</h2>
+    <p class="nk-desc">동그라미 하나가 학생 한 명입니다. 진한 색은 ‘그래요’ 이상(4~5), 연한 색은 ‘보통이에요’(3), 빈 동그라미는 ‘아니에요’ 이하(1~2)로 답한 학생입니다.</p>
+    <div class="nk-card nk-feel" id="feel-card">
+      <div class="nk-feelrow"><p class="nk-feelq">“방과후 수업 시간이 있는 것이 좋아요.” <span class="nk-cap">a1</span></p><div class="nk-feelbody" data-draw="feel-a1" data-source="common_counts">—</div></div>
+      <div class="nk-feelrow"><p class="nk-feelq">“정규 수업이 끝나고 학교에 더 남아 있는 것이 힘들어요.” <span class="nk-cap">a2</span></p><div class="nk-feelbody" data-draw="feel-a2" data-source="common_counts">—</div></div>
+      <div class="nk-feelrow"><p class="nk-feelq">“방과후 수업도 공부하는 시간처럼 느껴져요.” <span class="nk-cap">a3</span></p><div class="nk-feelbody" data-draw="feel-a3" data-source="common_counts">—</div></div>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="types">
+    <h2>학생 유형: 수업 때문인가, 방과후 자체 때문인가</h2>
+    <p class="nk-desc">방과후 태도(a1)와 수업 경험 점수(3.5 기준)를 교차해 학생을 나눕니다. a1이 낮은데 수업 경험은 좋은 학생이 <b>막연한 거부감형</b>으로, 이 설문이 가장 알고 싶은 집단입니다. a1에 ‘보통이에요(3)’라고 답한 학생은 중립으로 따로 셉니다.</p>
+    <div class="nk-legend" id="types-legend">
+      <span><i class="nk-sw" data-type-swatch="만족형"></i>만족형</span>
+      <span><i class="nk-sw" data-type-swatch="프로그램 불만형"></i>프로그램 불만형</span>
+      <span><i class="nk-sw" data-type-swatch="막연한 거부감형"></i>막연한 거부감형</span>
+      <span><i class="nk-sw" data-type-swatch="전반 불만형"></i>전반 불만형</span>
+      <span><i class="nk-sw" data-type-swatch="중립"></i>중립</span>
+    </div>
+    <div class="nk-grid2">
+      <div class="nk-card" id="types-dist-card">
+        <h3>전체와 학년별 유형 비율</h3>
+        <div class="nk-chart" data-draw="types-bars" data-source="type_dist"></div>
+        <p class="nk-cap" data-draw="types-note">—</p>
+      </div>
+      <div class="nk-card" id="types-scatter-card">
+        <h3>학생 한 명 = 점 하나</h3>
+        <div class="nk-plot">
+          <div class="nk-chart" data-draw="types-scatter" data-source="students_typed"></div>
+          <span class="nk-q nk-q-tl">프로그램 불만형</span>
+          <span class="nk-q nk-q-tr">만족형</span>
+          <span class="nk-q nk-q-mid">중립 (a1 = 3)</span>
+          <span class="nk-q nk-q-bl">전반 불만형</span>
+          <span class="nk-q nk-q-br">막연한 거부감형</span>
+        </div>
+        <p class="nk-cap">가로: 수업 경험 점수(1~5, 세로 점선이 3.5) · 세로: a1 방과후 태도(1~5). a1은 정수라 점이 겹치지 않도록 위아래로 조금씩 흩뜨렸습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="cause">
+    <h2>막연한 거부감은 피로 때문일까, ‘공부 시간’이라는 인식 때문일까</h2>
+    <p class="nk-desc">막연한 거부감형 학생의 a2(정규 수업 뒤 학교에 더 남아 있기 힘들다)와 a3(방과후도 공부 시간처럼 느껴진다) 점수를 다른 학생과 비교합니다. 두 문항은 점수가 높을수록 피로가 크고, 공부로 느끼는 정도가 큽니다.</p>
+    <div class="nk-card" id="cause-card">
+      <div class="nk-legend">
+        <span><i class="nk-sw nk-dot" data-type-swatch="막연한 거부감형"></i>막연한 거부감형</span>
+        <span><i class="nk-sw nk-ring"></i>그 외 학생 전체</span>
+        <span><i class="nk-sw nk-dot" data-type-swatch="만족형"></i><i class="nk-sw nk-dot" data-type-swatch="프로그램 불만형"></i><i class="nk-sw nk-dot" data-type-swatch="전반 불만형"></i><i class="nk-sw nk-dot" data-type-swatch="중립"></i>다른 각 유형</span>
+      </div>
+      <div class="nk-dotrow" id="cause-a2-row">
+        <div class="nk-dotlabel">피로 <small>a2 · 남아 있는 것이 힘들어요</small></div>
+        <div class="nk-chart" data-draw="cause-a2" data-source="cause"></div>
+      </div>
+      <div class="nk-dotrow" id="cause-a3-row">
+        <div class="nk-dotlabel">공부 인식 <small>a3 · 공부하는 시간처럼 느껴져요</small></div>
+        <div class="nk-chart" data-draw="cause-a3" data-source="cause"></div>
+      </div>
+      <p class="nk-cap" data-draw="cause-note">—</p>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="programs">
+    <h2>수업별 영역 점수</h2>
+    <p class="nk-desc">문항별 평균을 0~100점으로 바꾼 값입니다(아주 그래요 100 · 그래요 75 · 보통 50 · 아니에요 25 · 전혀 아니에요 0). 지루함(q10)은 거꾸로 채점해 높을수록 덜 지루하다는 뜻입니다. 왼쪽부터 프로그램(활동 자체·수준), 강사(전달력·친절), 수업 전반 문항 순입니다. 수업 경험은 q4~q10 7문항 평균이고, 전반 만족(q11)은 타당도 확인용으로 따로 둡니다.</p>
+    <div class="nk-bands" id="band-legend">
+      <span>해석 구간(잠정)</span>
+      <span class="nk-chip nk-b-vpos">매우 긍정 80+</span>
+      <span class="nk-chip nk-b-pos">긍정 60~79</span>
+      <span class="nk-chip nk-b-mid">보통 40~59</span>
+      <span class="nk-chip nk-b-neg">부정 20~39</span>
+      <span class="nk-chip nk-b-vneg">매우 부정 20 미만</span>
+    </div>
+    <div class="nk-card" id="programs-card">
+      <div class="nk-scroll">
+        <table class="nk-table" data-source="program_scores" data-row-key="mode,program" aria-label="수업별 영역 환산 점수">
+          <thead><tr>
+            <th data-field="program">수업</th>
+            <th data-field="n">응답<small>건</small></th>
+            <th data-field="p1" class="nk-gp">활동 자체<small>프로그램 p1</small></th>
+            <th data-field="q8">수준 적합<small>프로그램 q8</small></th>
+            <th data-field="q7" class="nk-gt">전달력<small>강사 q7</small></th>
+            <th data-field="t2">친절<small>강사 t2</small></th>
+            <th data-field="q4" class="nk-gt">흥미<small>q4</small></th>
+            <th data-field="q5">활동<small>q5</small></th>
+            <th data-field="q6">성장<small>q6</small></th>
+            <th data-field="q9">재수강<small>q9</small></th>
+            <th data-field="q10_r">덜 지루함<small>q10 역</small></th>
+            <th data-field="exp">수업 경험<small>7문항</small></th>
+            <th data-field="q11">전반 만족<small>q11</small></th>
+          </tr></thead>
+          <tbody data-draw="prog-tbody"></tbody>
+        </table>
+      </div>
+      <p class="nk-cap">응답이 5건 미만인 수업은 ‘적음’으로 표시합니다. 한두 명의 응답에 점수가 크게 흔들리니 해석에 주의하세요.</p>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="split">
+    <h2>수업에 대한 불만, 프로그램 때문인가 강사 때문인가</h2>
+    <p class="nk-desc">수업 응답마다 활동 점수(p1 활동 자체, q8 수준 적합 평균)와 선생님 점수(q7 전달력, t2 친절 평균)를 3.5 기준으로 나눕니다. 활동은 좋은데 선생님 점수만 낮으면 <b>강사 쪽 불만</b>, 선생님은 좋은데 활동 점수만 낮으면 <b>프로그램 쪽 불만</b>입니다. 오른쪽 표는 학생이 직접 고른 “바뀌었으면 하는 것”이라 두 결과가 같은 방향인지 함께 봅니다.</p>
+    <p class="nk-lede" id="split-lede" data-draw="split-lede">—</p>
+    <div class="nk-legend" id="split-legend">
+      <span><i class="nk-sw" data-split-swatch="둘 다 만족"></i>둘 다 만족</span>
+      <span><i class="nk-sw" data-split-swatch="강사 쪽 불만"></i>강사 쪽 불만</span>
+      <span><i class="nk-sw" data-split-swatch="프로그램 쪽 불만"></i>프로그램 쪽 불만</span>
+      <span><i class="nk-sw" data-split-swatch="둘 다 불만"></i>둘 다 불만</span>
+    </div>
+    <div class="nk-grid2">
+      <div class="nk-card" id="split-bars-card">
+        <h3>수업별 유형 비율 (점수로 나눔)</h3>
+        <div class="nk-chart" data-draw="split-bars" data-source="split_dist"></div>
+        <p class="nk-cap">막대 안의 숫자는 %입니다. 오른쪽 숫자는 응답 건수이며, 5건 미만이면 ‘적음’으로 표시합니다.</p>
+      </div>
+      <div class="nk-card" id="reasons-card">
+        <h3>바뀌었으면 하는 것 (학생이 고름, %)</h3>
+        <div class="nk-scroll">
+          <table class="nk-table" data-source="c1_reasons" data-row-key="mode,program" aria-label="수업별로 바뀌었으면 하는 것을 고른 비율">
+            <thead><tr>
+              <th data-field="program">수업</th>
+              <th data-field="answered">응답<small>건</small></th>
+              <th data-field="r_content">활동·내용</th>
+              <th data-field="r_method">가르치는<br>방법</th>
+              <th data-field="r_attitude">말투·태도</th>
+              <th data-field="r_time">시간·요일</th>
+              <th data-field="r_supply">준비물·<br>장소</th>
+              <th data-field="r_none">없음</th>
+            </tr></thead>
+            <tbody data-draw="reasons-tbody"></tbody>
+          </table>
+        </div>
+        <p class="nk-cap">한 응답이 여러 보기를 고를 수 있어 가로 합이 100%를 넘을 수 있습니다. 선생님 관련 두 칸(가르치는 방법, 말투·태도)은 진하게 표시합니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="rejoin">
+    <h2>내년에도 듣고 싶은 학생 비율</h2>
+    <p class="nk-desc">q9 “내년에도 이 수업을 또 듣고 싶어요”에 ‘그래요’ 이상(4~5)으로 답한 비율입니다.</p>
+    <div class="nk-card" id="rejoin-card">
+      <div class="nk-chart" data-draw="rejoin-bars" data-source="program_scores"></div>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="grades">
+    <h2>학년별로 보기</h2>
+    <div class="nk-grid2">
+      <div class="nk-card" id="grade-card">
+        <h3>공통 문항과 수업 경험</h3>
+        <div class="nk-scroll">
+          <table class="nk-table" data-source="grade_scores" data-row-key="mode,grade" aria-label="학년별 공통 문항과 수업 경험 점수">
+            <thead><tr>
+              <th data-field="grade">학년</th>
+              <th data-field="n">학생<small>명</small></th>
+              <th data-field="a1">방과후 태도<small>a1</small></th>
+              <th data-field="a2">피로<small>a2 · 높을수록 힘듦</small></th>
+              <th data-field="a3">공부 인식<small>a3 · 높을수록 공부</small></th>
+              <th data-field="exp">수업 경험</th>
+              <th data-field="vague">거부감형<small>명</small></th>
+            </tr></thead>
+            <tbody data-draw="grade-tbody"></tbody>
+          </table>
+        </div>
+        <p class="nk-cap">a2·a3는 높을수록 부정적인 문항이라 색을 칠하지 않았습니다.</p>
+      </div>
+      <div class="nk-card" id="gp-card">
+        <h3>학년 × 수업 수업 경험</h3>
+        <div class="nk-scroll">
+          <table class="nk-table" aria-label="학년과 수업별 수업 경험 점수">
+            <thead><tr>
+              <th>학년</th><th>🎨 미술회화</th><th>🚲 외발자전거</th><th>🥁 사물놀이</th><th>🎸 기타</th><th>🎻 바이올린</th>
+            </tr></thead>
+            <tbody data-draw="gp-tbody" data-source="grade_program"></tbody>
+          </table>
+        </div>
+        <p class="nk-cap">익명성 보호를 위해 수강생이 3명 미만인 칸은 ‘비공개’로 가립니다. 작은 숫자는 그 칸의 학생 수입니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="nk-sec" id="open">
+    <h2>학생들이 직접 쓴 말</h2>
+    <div class="nk-open-head">
+      <label for="open-program">수업</label>
+      <select class="dash-select" id="open-program" aria-label="개방형 응답을 볼 수업">
+        <option value="art">🎨 미술회화</option>
+        <option value="unicycle">🚲 외발자전거</option>
+        <option value="samul">🥁 사물놀이</option>
+        <option value="guitar">🎸 기타(악기)</option>
+        <option value="violin">🎻 바이올린</option>
+      </select>
+      <span class="nk-cap" data-draw="open-note">—</span>
+    </div>
+    <div class="nk-grid2">
+      <div class="nk-card" id="open-q12">
+        <h3>가장 좋았던 것 <span class="nk-cap">q12</span></h3>
+        <div class="nk-kw" data-draw="kw-q12" data-source="open_kw"></div>
+        <ul class="nk-quotes" data-draw="quotes-q12" data-source="open_quotes"></ul>
+      </div>
+      <div class="nk-card" id="open-q13">
+        <h3>아쉬웠던 점, 바뀌었으면 하는 것 <span class="nk-cap">q13</span></h3>
+        <div class="nk-kw" data-draw="kw-q13" data-source="open_kw"></div>
+        <ul class="nk-quotes" data-draw="quotes-q13" data-source="open_quotes"></ul>
+      </div>
+    </div>
+    <p class="nk-cap">분류는 낱말 규칙으로 자동으로 나눈 것이며 한 응답이 여러 분류에 들 수 있습니다. 막대 길이는 그 수업 응답 중 해당 분류가 차지하는 비율입니다. 친구 이름은 입력할 때 ○○로 가려 적습니다.</p>
+  </section>
+
+  <footer class="nk-foot" id="method">
+    <details>
+      <summary>계산 방법과 점검 규칙</summary>
+      <div class="nk-method">
+        <div>
+          <h4>점수 환산</h4>
+          <p>원점수: 아주 그래요 5 · 그래요 4 · 보통이에요 3 · 아니에요 2 · 전혀 아니에요 1. 역채점 <code>q10_r = 6 − q10</code>. 환산 점수 <code>(평균 − 1) ÷ 4 × 100</code>.</p>
+        </div>
+        <div>
+          <h4>수업 경험 점수</h4>
+          <p>응답마다 q4~q9와 q10_r 7문항 평균(4문항 이상 답한 경우). q11은 타당도 기준이라 넣지 않습니다. 학생의 수업 경험은 그 학생이 들은 수업 점수의 평균입니다.</p>
+        </div>
+        <div>
+          <h4>유형 분류</h4>
+          <ul>
+            <li>a1 4~5 · 경험 3.5 이상: 만족형 / 미만: 프로그램 불만형</li>
+            <li>a1 1~2 · 경험 3.5 이상: 막연한 거부감형 / 미만: 전반 불만형</li>
+            <li>a1 3: 중립. a1 무응답이나 수업 응답이 없으면 분류 불가</li>
+          </ul>
+        </div>
+        <div>
+          <h4>프로그램 대 강사</h4>
+          <p>수업 응답마다 활동 점수 = (p1 + q8) ÷ 2, 선생님 점수 = (q7 + t2) ÷ 2. 둘 다 3.5 이상이면 둘 다 만족, 활동만 3.5 이상이면 강사 쪽 불만, 선생님만 3.5 이상이면 프로그램 쪽 불만, 둘 다 미만이면 둘 다 불만입니다. 각 점수는 두 문항뿐이라 학생이 직접 고른 c1과 함께 읽습니다.</p>
+        </div>
+        <div>
+          <h4>점검 플래그</h4>
+          <ul>
+            <li>모순: q4 ≥ 4 이고 q10 ≥ 4, 또는 q4 ≤ 2 이고 q10 ≤ 2</li>
+            <li>일자 응답: q4~q11 응답이 6개 이상이고 모두 같은 값</li>
+            <li>기본은 제외, 위쪽 버튼으로 포함해 볼 수 있습니다</li>
+          </ul>
+        </div>
+        <div>
+          <h4>신뢰도·타당도</h4>
+          <p>Cronbach α는 7문항에 모두 답한 응답으로 계산합니다(기준 .70). 수렴타당도는 수업 경험 점수와 q11의 피어슨 r입니다(기준 .60). 두 값 모두 학년·수업으로 나누지 않고 전체 응답으로만 계산합니다.</p>
+        </div>
+        <div>
+          <h4>해석 구간과 익명성</h4>
+          <p>80 이상 매우 긍정 · 60~79 긍정 · 40~59 보통 · 20~39 부정 · 20 미만 매우 부정 (잠정안, 확정 필요). 학년×수업 수강생이 3명 미만이면 그 칸 점수와 개방형 응답을 표시하지 않습니다.</p>
+        </div>
+      </div>
+    </details>
+  </footer>
+</div>
+
+<script>
+/* ---------- 계산 ---------- */
+dash.calc('scored', {
+  title: '수업 응답 채점',
+  description: '수업 응답마다 역채점(q10_r), 수업 경험 점수(exp), 점검 플래그를 붙입니다.',
+  inputs: ['responses', 'students'],
+  fn: (responses, students) => {
+    const num = (v) => { const s = String(v ?? '').trim(); const n = Number(s); return s !== '' && Number.isInteger(n) && n >= 1 && n <= 5 ? n : null; };
+    const gradeOf = new Map(students.map((s) => [String(s.rid).trim(), Number(s.grade)]));
+    const items = ['q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10', 'q11'];
+    return responses.map((r) => {
+      const rid = String(r.rid ?? '').trim();
+      const q = Object.fromEntries(items.map((k) => [k, num(r[k])]));
+      const q10_r = q.q10 == null ? null : 6 - q.q10;
+      const expItems = [q.q4, q.q5, q.q6, q.q7, q.q8, q.q9, q10_r].filter((v) => v != null);
+      const exp = expItems.length >= 4 ? expItems.reduce((a, b) => a + b, 0) / expItems.length : null;
+      const contradict = q.q4 != null && q.q10 != null && ((q.q4 >= 4 && q.q10 >= 4) || (q.q4 <= 2 && q.q10 <= 2));
+      const answered = items.map((k) => q[k]).filter((v) => v != null);
+      const straight = answered.length >= 6 && answered.every((v) => v === answered[0]);
+      const text = (v) => { const s = String(v ?? '').trim(); return s === '' ? null : s; };
+      const p1 = num(r.p1), t2 = num(r.t2);
+      const avg = (a) => { const v = a.filter((x) => x != null); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
+      const prog = avg([p1, q.q8]), teach = avg([q.q7, t2]);
+      let split = '분류 불가';
+      if (prog != null && teach != null) {
+        if (prog >= 3.5) split = teach >= 3.5 ? '둘 다 만족' : '강사 쪽 불만';
+        else split = teach >= 3.5 ? '프로그램 쪽 불만' : '둘 다 불만';
+      }
+      return { rid, grade: gradeOf.get(rid) ?? null, program: String(r.program ?? '').trim(), ...q, q10_r, exp, p1, t2, prog, teach, split,
+        flag_contradict: contradict, flag_straight: straight, flagged: contradict || straight, q12: text(r.q12), q13: text(r.q13), c1: text(r.c1) };
+    });
+  },
+});
+
+dash.calc('students_typed', {
+  title: '학생별 유형',
+  description: '학생마다 수업 경험 평균과 a1로 유형을 나눕니다. 플래그 응답을 뺀 경우(exclude)와 넣은 경우(include)를 모두 계산합니다.',
+  inputs: ['scored', 'students'],
+  fn: (scored, students) => {
+    const num = (v) => { const s = String(v ?? '').trim(); const n = Number(s); return s !== '' && Number.isInteger(n) && n >= 1 && n <= 5 ? n : null; };
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      for (const s of students) {
+        const rid = String(s.rid ?? '').trim();
+        const mine = scored.filter((r) => r.rid === rid && r.exp != null && (mode === 'include' || !r.flagged));
+        const exp = mine.length ? mine.reduce((a, r) => a + r.exp, 0) / mine.length : null;
+        const a1 = num(s.a1);
+        let type;
+        if (a1 == null || exp == null) type = '분류 불가';
+        else if (a1 === 3) type = '중립';
+        else if (a1 >= 4) type = exp >= 3.5 ? '만족형' : '프로그램 불만형';
+        else type = exp >= 3.5 ? '막연한 거부감형' : '전반 불만형';
+        out.push({ mode, rid, grade: Number(s.grade), a1, a2: num(s.a2), a3: num(s.a3),
+          exp: exp == null ? null : Math.round(exp * 100) / 100, programs: mine.length, type });
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('summary', {
+  title: '요약 지표',
+  description: '응답 수, 플래그 수, a1 환산 점수, Cronbach α, 수업 경험과 q11의 상관 r.',
+  inputs: ['scored', 'students_typed'],
+  fn: (scored, typed) => {
+    const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+    const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
+    const variance = (a) => { const m = mean(a); return a.reduce((s, v) => s + (v - m) ** 2, 0) / (a.length - 1); };
+    const keys = ['q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10_r'];
+    return ['exclude', 'include'].map((mode) => {
+      const rows = mode === 'include' ? scored : scored.filter((r) => !r.flagged);
+      const st = typed.filter((t) => t.mode === mode);
+      const a1s = st.map((t) => t.a1).filter((v) => v != null);
+      const complete = rows.filter((r) => keys.every((k) => r[k] != null));
+      let alpha = null;
+      if (complete.length >= 3) {
+        const itemVar = keys.reduce((s, k) => s + variance(complete.map((r) => r[k])), 0);
+        const totVar = variance(complete.map((r) => keys.reduce((s, k) => s + r[k], 0)));
+        if (totVar > 0) alpha = (keys.length / (keys.length - 1)) * (1 - itemVar / totVar);
+      }
+      const pairs = rows.filter((r) => r.exp != null && r.q11 != null);
+      let r = null;
+      if (pairs.length >= 3) {
+        const mx = mean(pairs.map((p) => p.exp)), my = mean(pairs.map((p) => p.q11));
+        let sxy = 0, sxx = 0, syy = 0;
+        for (const p of pairs) { sxy += (p.exp - mx) * (p.q11 - my); sxx += (p.exp - mx) ** 2; syy += (p.q11 - my) ** 2; }
+        if (sxx > 0 && syy > 0) r = sxy / Math.sqrt(sxx * syy);
+      }
+      return { mode, students: st.length, typed: st.filter((t) => t.type !== '분류 불가').length,
+        responses_used: rows.length, responses_total: scored.length,
+        flagged: scored.filter((x) => x.flagged).length,
+        contradict: scored.filter((x) => x.flag_contradict).length,
+        straight: scored.filter((x) => x.flag_straight).length,
+        a1_n: a1s.length, a1_score: toScore(mean(a1s)),
+        alpha: alpha == null ? null : Math.round(alpha * 100) / 100, alpha_n: complete.length,
+        r: r == null ? null : Math.round(r * 100) / 100, r_n: pairs.length };
+    });
+  },
+});
+
+dash.calc('type_dist', {
+  title: '유형 분포',
+  description: '전체와 학년별 유형 인원과 비율. 비율의 분모는 분류된 학생(중립 포함)입니다.',
+  inputs: ['students_typed'],
+  fn: (typed) => {
+    const types = ['만족형', '프로그램 불만형', '막연한 거부감형', '전반 불만형', '중립', '분류 불가'];
+    const groups = [['전체', null], ['3학년', 3], ['4학년', 4], ['5학년', 5], ['6학년', 6]];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      for (const [group, g] of groups) {
+        const st = typed.filter((t) => t.mode === mode && (g == null || t.grade === g));
+        const total = st.filter((t) => t.type !== '분류 불가').length;
+        for (const type of types) {
+          const n = st.filter((t) => t.type === type).length;
+          out.push({ mode, group, type, n, total, pct: type === '분류 불가' || total === 0 ? null : Math.round((n / total) * 100) });
+        }
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('cause', {
+  title: '유형별 피로(a2)·공부 인식(a3)',
+  description: '유형별 a2·a3 환산 점수와, 막연한 거부감형을 뺀 나머지 학생 전체의 점수.',
+  inputs: ['students_typed'],
+  fn: (typed) => {
+    const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+    const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
+    const groups = ['막연한 거부감형', '만족형', '프로그램 불만형', '전반 불만형', '중립', '그 외 학생'];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      const st = typed.filter((t) => t.mode === mode && t.type !== '분류 불가');
+      for (const group of groups) {
+        const g = group === '그 외 학생' ? st.filter((t) => t.type !== '막연한 거부감형') : st.filter((t) => t.type === group);
+        const a2 = g.map((t) => t.a2).filter((v) => v != null), a3 = g.map((t) => t.a3).filter((v) => v != null);
+        out.push({ mode, group, n: g.length, a2_n: a2.length, a2_score: toScore(mean(a2)), a3_n: a3.length, a3_score: toScore(mean(a3)) });
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('program_scores', {
+  title: '수업별 영역 점수',
+  description: '수업마다 문항별 환산 점수(0~100), 수업 경험, q11, 재수강 의향(q9 4~5) 비율.',
+  inputs: ['scored'],
+  fn: (scored) => {
+    const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+    const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
+    const programs = ['art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const items = ['q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10_r', 'q11', 'exp', 'p1', 't2', 'prog', 'teach'];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      const rows = mode === 'include' ? scored : scored.filter((r) => !r.flagged);
+      for (const program of programs) {
+        const pr = rows.filter((r) => r.program === program);
+        const row = { mode, program, n: pr.length, students: new Set(pr.map((r) => r.rid)).size };
+        for (const k of items) row[k] = toScore(mean(pr.map((r) => r[k]).filter((v) => v != null)));
+        const q9 = pr.map((r) => r.q9).filter((v) => v != null);
+        row.rejoin_n = q9.length;
+        row.rejoin_yes = q9.filter((v) => v >= 4).length;
+        row.rejoin_pct = q9.length ? Math.round((row.rejoin_yes / q9.length) * 100) : null;
+        out.push(row);
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('common_counts', {
+  title: '공통 문항 응답 인원',
+  description: 'a1~a3마다 그래요 이상(4~5), 보통(3), 아니에요 이하(1~2)로 답한 학생 수.',
+  inputs: ['students'],
+  fn: (students) => {
+    const num = (v) => { const s = String(v ?? '').trim(); const n = Number(s); return s !== '' && Number.isInteger(n) && n >= 1 && n <= 5 ? n : null; };
+    return ['a1', 'a2', 'a3'].map((item) => {
+      const v = students.map((s) => num(s[item])).filter((x) => x != null);
+      return { item, n: v.length, yes: v.filter((x) => x >= 4).length, mid: v.filter((x) => x === 3).length, no: v.filter((x) => x <= 2).length };
+    });
+  },
+});
+
+dash.calc('split_dist', {
+  title: '프로그램 대 강사 유형',
+  description: '수업 응답마다 활동 점수(p1·q8)와 선생님 점수(q7·t2)를 3.5 기준으로 나눈 네 유형의 인원과 비율.',
+  inputs: ['scored'],
+  fn: (scored) => {
+    const types = ['둘 다 만족', '강사 쪽 불만', '프로그램 쪽 불만', '둘 다 불만'];
+    const groups = ['전체', 'art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      const rows = (mode === 'include' ? scored : scored.filter((r) => !r.flagged)).filter((r) => r.split !== '분류 불가');
+      for (const program of groups) {
+        const pr = program === '전체' ? rows : rows.filter((r) => r.program === program);
+        for (const split of types) {
+          const n = pr.filter((r) => r.split === split).length;
+          out.push({ mode, program, split, n, total: pr.length, pct: pr.length ? Math.round((n / pr.length) * 100) : null });
+        }
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('c1_reasons', {
+  title: '바뀌었으면 하는 것 (학생이 고름)',
+  description: 'c1에서 각 보기를 고른 응답의 비율(%). 한 응답이 여러 보기를 고를 수 있습니다.',
+  inputs: ['scored'],
+  fn: (scored) => {
+    const reasons = [['r_content', '하는 활동이나 배우는 내용'], ['r_method', '선생님이 가르치는 방법'], ['r_attitude', '선생님의 말투나 태도'],
+      ['r_time', '수업 시간이나 요일'], ['r_supply', '준비물·악기·장소'], ['r_none', '바뀌었으면 하는 것 없음']];
+    const groups = ['전체', 'art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      const rows = (mode === 'include' ? scored : scored.filter((r) => !r.flagged)).filter((r) => r.c1);
+      for (const program of groups) {
+        const pr = program === '전체' ? rows : rows.filter((r) => r.program === program);
+        const row = { mode, program, answered: pr.length };
+        for (const [key, label] of reasons) {
+          const n = pr.filter((r) => r.c1.split(',').map((s) => s.trim()).includes(label)).length;
+          row[key + '_n'] = n;
+          row[key] = pr.length ? Math.round((n / pr.length) * 100) : null;
+        }
+        const teacher = pr.filter((r) => { const c = r.c1.split(',').map((s) => s.trim()); return c.includes('선생님이 가르치는 방법') || c.includes('선생님의 말투나 태도'); }).length;
+        row.r_teacher_n = teacher;
+        row.r_teacher = pr.length ? Math.round((teacher / pr.length) * 100) : null;
+        out.push(row);
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('grade_scores', {
+  title: '학년별 점수',
+  description: '학년마다 a1·a2·a3 환산 점수, 학생 수업 경험 평균, 막연한 거부감형 인원.',
+  inputs: ['students_typed'],
+  fn: (typed) => {
+    const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+    const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      for (const grade of [3, 4, 5, 6]) {
+        const st = typed.filter((t) => t.mode === mode && t.grade === grade);
+        const col = (k) => toScore(mean(st.map((t) => t[k]).filter((v) => v != null)));
+        out.push({ mode, grade, n: st.length, a1: col('a1'), a2: col('a2'), a3: col('a3'), exp: col('exp'),
+          vague: st.filter((t) => t.type === '막연한 거부감형').length });
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('grade_program', {
+  title: '학년 × 수업 수업 경험',
+  description: '학년과 수업이 겹치는 칸의 수업 경험 환산 점수. 수강생 3명 미만인 칸은 점수를 비웁니다.',
+  inputs: ['scored'],
+  fn: (scored) => {
+    const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+    const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
+    const programs = ['art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      const rows = (mode === 'include' ? scored : scored.filter((r) => !r.flagged)).filter((r) => r.exp != null);
+      for (const grade of [3, 4, 5, 6]) {
+        const row = { mode, grade };
+        for (const p of programs) {
+          const cell = rows.filter((r) => r.grade === grade && r.program === p);
+          const n = new Set(cell.map((r) => r.rid)).size;
+          row[p + '_n'] = n;
+          row[p] = n >= 3 ? toScore(mean(cell.map((r) => r.exp))) : null;
+        }
+        out.push(row);
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('open_coded', {
+  title: '개방형 응답 분류',
+  description: 'q12·q13 응답을 낱말 규칙으로 분류합니다. 학년×수업 수강생이 3명 미만인 응답은 글을 비웁니다.',
+  inputs: ['scored'],
+  fn: (scored) => {
+    const rules = [
+      ['직접 해 보기', /직접|해 봤|해봤|타는|치는|연주|그리|그린|만들|쳐 봤/],
+      ['해낸 것·배운 것', /할 수 있게|잡을 수 있게|처음으로|배웠|외울 수|늘었|됐어요|되었어요/],
+      ['친구와 함께', /친구|같이|함께/],
+      ['선생님', /선생님/],
+      ['발표·전시', /발표|공연|걸려|전시/],
+      ['소리·느낌이 좋음', /소리가 좋|소리가 예|신나|재밌|재미있|기뻤|좋아요/],
+      ['어려움', /어려|잘 안|잘 못/],
+      ['지루함·반복', /지루|똑같|반복|같은 곡|연습만/],
+      ['피로·시간', /피곤|힘들|늦게|길어/],
+      ['몸이 아픔', /아파|아픈/],
+      ['도구·재료', /재료|부족|악기가|줄이|무거|고장/],
+      ['공부 같음', /공부/],
+      ['더 하고 싶음', /싶어요|싶다/],
+      ['아쉬운 점 없음', /^없|없어요|없음|다 좋/],
+    ];
+    const out = [];
+    for (const mode of ['exclude', 'include']) {
+      const rows = mode === 'include' ? scored : scored.filter((r) => !r.flagged);
+      const combo = new Map();
+      for (const r of rows) { const k = r.grade + '|' + r.program; if (!combo.has(k)) combo.set(k, new Set()); combo.get(k).add(r.rid); }
+      for (const r of rows) {
+        const shown = (combo.get(r.grade + '|' + r.program)?.size ?? 0) >= 3;
+        for (const question of ['q12', 'q13']) {
+          const text = r[question];
+          if (!text) continue;
+          let cats = rules.filter(([, re]) => re.test(text)).map(([c]) => c);
+          if (question === 'q13') cats = cats.filter((c) => c !== '소리·느낌이 좋음' || cats.length === 1);
+          if (cats.includes('아쉬운 점 없음')) cats = ['아쉬운 점 없음'];
+          if (!cats.length) cats = ['기타'];
+          out.push({ mode, program: r.program, question, shown, text: shown ? text : null, categories: cats.join(', ') });
+        }
+      }
+    }
+    return out;
+  },
+});
+
+dash.calc('open_kw', {
+  title: '개방형 응답 분류별 건수',
+  description: '수업·문항별로 각 분류에 든 응답 수와 공개된 응답 수.',
+  inputs: ['open_coded'],
+  fn: (coded) => {
+    const out = [];
+    const keys = new Set(coded.map((c) => [c.mode, c.program, c.question].join('|')));
+    for (const key of keys) {
+      const [mode, program, question] = key.split('|');
+      const all = coded.filter((c) => c.mode === mode && c.program === program && c.question === question);
+      const shown = all.filter((c) => c.shown);
+      const counts = new Map();
+      for (const c of shown) for (const cat of c.categories.split(', ')) counts.set(cat, (counts.get(cat) || 0) + 1);
+      for (const [category, n] of counts) out.push({ mode, program, question, category, n, answers: shown.length, hidden: all.length - shown.length });
+    }
+    return out;
+  },
+});
+
+dash.calc('open_quotes', {
+  title: '대표 의견',
+  description: '수업·문항별로 많이 나온 분류부터 한 개씩, 최대 4개의 공개 가능한 응답을 고릅니다.',
+  inputs: ['open_coded'],
+  fn: (coded) => {
+    const out = [];
+    const keys = new Set(coded.map((c) => [c.mode, c.program, c.question].join('|')));
+    for (const key of keys) {
+      const [mode, program, question] = key.split('|');
+      const shown = coded.filter((c) => c.mode === mode && c.program === program && c.question === question && c.shown);
+      const counts = new Map();
+      for (const c of shown) for (const cat of c.categories.split(', ')) counts.set(cat, (counts.get(cat) || 0) + 1);
+      const order = [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([c]) => c).filter((c) => c !== '아쉬운 점 없음' && c !== '기타');
+      const used = new Set();
+      let rank = 0;
+      for (const cat of order) {
+        if (rank >= 4) break;
+        const pick = shown.find((c) => c.categories.split(', ').includes(cat) && !used.has(c.text));
+        if (pick) { used.add(pick.text); rank += 1; out.push({ mode, program, question, rank, category: cat, text: pick.text }); }
+      }
+    }
+    return out;
+  },
+});
+</script>
+
+<script>
+/* ---------- 공통 도구 ---------- */
+window.NK = (() => {
+  const PROGRAMS = [['art', '🎨 미술회화'], ['unicycle', '🚲 외발자전거'], ['samul', '🥁 사물놀이'], ['guitar', '🎸 기타(악기)'], ['violin', '🎻 바이올린']];
+  const TYPES = ['만족형', '프로그램 불만형', '막연한 거부감형', '전반 불만형', '중립'];
+  const mode = () => (dash.params().flagged === 'include' ? 'include' : 'exclude');
+  const rows = (id) => { const d = dash.data(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data.filter((r) => r.mode === mode()) : []; };
+  const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
+  const where = (o) => Object.entries(o).map(([k, v]) => enc(k) + '=' + enc(v)).join('&');
+  const mark = (tag, src, field, w, text) => {
+    const e = document.createElement(tag);
+    e.setAttribute('data-source', src); e.setAttribute('data-field', field);
+    if (w) e.setAttribute('data-where', where(w));
+    e.textContent = text; return e;
+  };
+  const node = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  const BANDS = [[80, '매우 긍정', 'vpos'], [60, '긍정', 'pos'], [40, '보통', 'mid'], [20, '부정', 'neg'], [-Infinity, '매우 부정', 'vneg']];
+  const band = (s) => (s == null ? null : BANDS.find(([min]) => s >= min));
+  const chip = (s) => { const b = band(s); return node('span', 'nk-chip nk-b-' + (b ? b[2] : 'none'), b ? b[1] : '자료 없음'); };
+  const typeColor = (t) => {
+    const c = dash.colors || [];
+    return ({ '막연한 거부감형': c[0], '만족형': c[1], '프로그램 불만형': c[2], '전반 불만형': c[3] })[t] || 'var(--cds-chart-muted)';
+  };
+  const ready = (el, ids, opt = {}) => {
+    const st = ids.map((id) => dash.data(id).status);
+    if (st.every((s) => s === 'ok')) { el.classList.remove('dash-skeleton'); return true; }
+    if (st.some((s) => s === 'loading')) {
+      if (opt.table) el.replaceChildren(); else { el.classList.add('dash-skeleton'); el.replaceChildren(opt.box ? '' : '—'); }
+      return false;
+    }
+    el.classList.remove('dash-skeleton');
+    if (st.some((s) => s === 'error' || s === 'missing')) {
+      if (opt.table) el.replaceChildren(); else el.replaceChildren(node('span', 'nk-fail', '불러오지 못했어요'));
+    } else el.replaceChildren(opt.box || opt.table ? '' : '—');
+    return false;
+  };
+  const tip = (host) => {
+    const t = node('div', 'nk-tip'); t.hidden = true; host.appendChild(t);
+    return {
+      show(ev, title, lines) {
+        t.replaceChildren(node('b', null, title), ...lines.map(([k, v]) => { const d = node('div'); d.append(node('span', null, k), node('span', null, v)); return d; }));
+        t.hidden = false;
+        const [x, y] = d3.pointer(ev, host);
+        const w = t.offsetWidth;
+        t.style.left = Math.max(0, Math.min(x + 12, host.clientWidth - w - 2)) + 'px';
+        t.style.top = (y + 14) + 'px';
+      },
+      hide() { t.hidden = true; },
+    };
+  };
+  const jitter = (s) => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return (h % 1000) / 1000 - 0.5; };
+  const measure = (sel) => d3.max(sel.nodes(), (n) => n.getComputedTextLength()) || 0;
+  const pname = Object.fromEntries(PROGRAMS);
+  const SPLITS = ['둘 다 만족', '강사 쪽 불만', '프로그램 쪽 불만', '둘 다 불만'];
+  const splitColor = (t) => {
+    const c = dash.colors || [];
+    return ({ '둘 다 만족': c[1], '강사 쪽 불만': c[0], '프로그램 쪽 불만': c[2], '둘 다 불만': c[3] })[t] || 'var(--cds-chart-muted)';
+  };
+  const summary = () => rows('summary')[0];
+  const vague = () => rows('type_dist').find((r) => r.group === '전체' && r.type === '막연한 거부감형');
+  const cause = (g) => rows('cause').find((r) => r.group === g);
+  return { PROGRAMS, TYPES, SPLITS, pname, mode, rows, where, mark, node, band, chip, typeColor, splitColor, ready, tip, jitter, measure, summary, vague, cause };
+})();
+
+/* 유형 색 견본 (그림이 아닌 스타일만 지정) */
+document.querySelectorAll('[data-type-swatch]').forEach((sw) => { sw.style.background = NK.typeColor(sw.getAttribute('data-type-swatch')); });
+document.querySelectorAll('[data-split-swatch]').forEach((sw) => { sw.style.background = NK.splitColor(sw.getAttribute('data-split-swatch')); });
+
+/* 플래그 토글 */
+document.querySelectorAll('[data-flag]').forEach((b) => {
+  b.addEventListener('click', () => dash.setParams({ flagged: b.getAttribute('data-flag') }));
+});
+/* 개방형 수업 선택 */
+document.querySelectorAll('#open-program').forEach((sel) => {
+  sel.addEventListener('change', () => dash.setParams({ oprog: sel.value }));
+});
+dash.onData(() => {
+  const m = NK.mode();
+  document.querySelectorAll('[data-flag]').forEach((b) => b.setAttribute('aria-pressed', String(b.getAttribute('data-flag') === m)));
+  document.querySelectorAll('#open-program').forEach((sel) => { if (document.activeElement !== sel) sel.value = dash.params().oprog || 'samul'; });
+});
+</script>
+
+<script>
+/* ---------- 머리말 ---------- */
+const nkSummary = NK.summary;
+const nkVague = NK.vague;
+const nkCause = NK.cause;
+
+dash.draw('lede-switch', () => {
+  if (dash.data('type_dist').status !== 'ok') return;
+  const v = nkVague();
+  const has = !!(v && v.n > 0);
+  document.querySelectorAll('#lede-has').forEach((e) => { e.hidden = !has; });
+  document.querySelectorAll('#lede-none').forEach((e) => { e.hidden = has; });
+});
+
+const nkA1 = (el) => {
+  if (!NK.ready(el, ['summary'])) return;
+  const s = nkSummary();
+  if (!s || s.a1_score == null) { el.replaceChildren('—'); return; }
+  el.replaceChildren(NK.band(s.a1_score)[1] + '(', NK.mark('span', 'summary', 'a1_score', { mode: s.mode }, String(s.a1_score)), '점)');
+};
+dash.draw('lede-a1', nkA1);
+dash.draw('lede-a1b', nkA1);
+
+dash.draw('lede-vague', (el) => {
+  if (!NK.ready(el, ['type_dist'])) return;
+  const v = nkVague();
+  if (!v) { el.replaceChildren('—'); return; }
+  const w = { mode: v.mode, group: '전체', type: '막연한 거부감형' };
+  el.replaceChildren(NK.mark('span', 'type_dist', 'n', w, String(v.n)), '명(분류된 학생의 ', NK.mark('span', 'type_dist', 'pct', w, String(v.pct)), '%)');
+});
+
+['a2', 'a3'].forEach((k) => dash.draw('lede-' + k, (el) => {
+  if (!NK.ready(el, ['cause'])) return;
+  const c = nkCause('막연한 거부감형');
+  if (!c || c[k + '_score'] == null) { el.replaceChildren('—'); return; }
+  el.replaceChildren(NK.mark('span', 'cause', k + '_score', { mode: c.mode, group: c.group }, String(c[k + '_score'])));
+}));
+
+dash.draw('lede-cause', (el) => {
+  if (!NK.ready(el, ['cause'])) return;
+  const c = nkCause('막연한 거부감형'), o = nkCause('그 외 학생');
+  if (!c || c.a2_score == null || c.a3_score == null) { el.replaceChildren('—'); return; }
+  const d = c.a2_score - c.a3_score;
+  let t = Math.abs(d) < 10 ? '두 요인의 차이가 크지 않습니다' : d > 0 ? '피로 쪽이 더 큽니다' : '공부라는 인식 쪽이 더 큽니다';
+  if (o && o.a2_score != null && Math.abs(d) >= 10) {
+    const k = d > 0 ? 'a2_score' : 'a3_score';
+    const gap = c[k] - o[k];
+    if (gap >= 10) t += ` (그 외 학생보다 ${gap}점 높음)`;
+  }
+  el.replaceChildren(t);
+});
+
+dash.draw('flag-note', (el) => {
+  if (!NK.ready(el, ['summary'])) return;
+  const s = nkSummary();
+  if (!s) { el.replaceChildren('—'); return; }
+  const w = { mode: s.mode };
+  el.replaceChildren('점검 플래그 응답 ', NK.mark('b', 'summary', 'flagged', w, String(s.flagged)), '건(모순 ',
+    NK.mark('span', 'summary', 'contradict', w, String(s.contradict)), ' · 일자 응답 ', NK.mark('span', 'summary', 'straight', w, String(s.straight)), ')을 ',
+    s.mode === 'include' ? '분석에 포함했습니다' : '분석에서 뺐습니다');
+});
+
+/* ---------- 요약 타일 ---------- */
+const nkTile = (name, build) => dash.draw(name, (el) => {
+  if (!NK.ready(el, ['summary'])) return;
+  const s = nkSummary();
+  if (!s) { el.replaceChildren('—'); return; }
+  el.replaceChildren(...build(s, { mode: s.mode }));
+});
+const nkBig = (...kids) => { const d = NK.node('div', 'nk-big'); d.append(...kids); return d; };
+const nkSub = (...kids) => { const d = NK.node('div', 'nk-sub'); d.append(...kids); return d; };
+const nkCheck = (v, min) => NK.node('span', 'nk-chip ' + (v >= min ? 'nk-pass' : 'nk-fail-chip'), v >= min ? '기준 충족' : '기준 미달');
+
+nkTile('t-students', (s, w) => [nkBig(NK.mark('span', 'summary', 'students', w, String(s.students)), NK.node('span', 'nk-unit', '명')),
+  nkSub('유형 분류된 학생 ', NK.mark('span', 'summary', 'typed', w, String(s.typed)), '명')]);
+nkTile('t-responses', (s, w) => [nkBig(NK.mark('span', 'summary', 'responses_used', w, String(s.responses_used)), NK.node('span', 'nk-unit', '건')),
+  nkSub('전체 ', NK.mark('span', 'summary', 'responses_total', w, String(s.responses_total)), '건 중')]);
+nkTile('t-flagged', (s, w) => [nkBig(NK.mark('span', 'summary', 'flagged', w, String(s.flagged)), NK.node('span', 'nk-unit', '건')),
+  nkSub(s.mode === 'include' ? '지금은 분석에 포함' : '지금은 분석에서 제외')]);
+nkTile('t-a1', (s, w) => s.a1_score == null ? ['—'] : [nkBig(NK.mark('span', 'summary', 'a1_score', w, String(s.a1_score)), NK.node('span', 'nk-unit', '점'), NK.chip(s.a1_score)),
+  nkSub('응답 ', NK.mark('span', 'summary', 'a1_n', w, String(s.a1_n)), '명 · 0~100 환산')]);
+nkTile('t-alpha', (s, w) => s.alpha == null ? ['계산할 응답이 부족해요'] : [nkBig(NK.mark('span', 'summary', 'alpha', w, s.alpha.toFixed(2)), nkCheck(s.alpha, 0.7)),
+  nkSub('7문항 모두 답한 응답 ', NK.mark('span', 'summary', 'alpha_n', w, String(s.alpha_n)), '건')]);
+nkTile('t-r', (s, w) => s.r == null ? ['계산할 응답이 부족해요'] : [nkBig(NK.mark('span', 'summary', 'r', w, s.r.toFixed(2)), nkCheck(s.r, 0.6)),
+  nkSub('응답 ', NK.mark('span', 'summary', 'r_n', w, String(s.r_n)), '건')]);
+</script>
+
+<script>
+/* ---------- 유형 분포 막대 ---------- */
+dash.draw('types-bars', (el) => {
+  if (!NK.ready(el, ['type_dist'], { box: true })) return;
+  const all = NK.rows('type_dist');
+  const groups = ['전체', '3학년', '4학년', '5학년', '6학년'];
+  const W = Math.max(260, el.clientWidth), rowH = 24, gap = 16, top = 2;
+  const H = top + groups.length * (rowH + gap) - gap + 4;
+  el.replaceChildren();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', '전체와 학년별 학생 유형 비율 누적 막대');
+  const tot = (g) => (all.find((r) => r.group === g && r.type === '만족형') || {}).total || 0;
+  const labels = svg.append('g').selectAll('text').data(groups).join('text')
+    .attr('x', 0).attr('y', (g, i) => top + i * (rowH + gap) + rowH / 2).attr('dy', '0.35em')
+    .attr('class', (g) => (g === '전체' ? 'nk-strong' : null))
+    .text((g) => `${g} ${tot(g)}명${tot(g) > 0 && tot(g) < 5 ? ' (적음)' : ''}`);
+  const lw = NK.measure(labels) + 10;
+  const x = d3.scaleLinear([0, 1], [lw, W]);
+  const t = NK.tip(el);
+  groups.forEach((g, i) => {
+    const y = top + i * (rowH + gap), total = tot(g);
+    const gEl = svg.append('g');
+    if (!total) { gEl.append('rect').attr('x', lw).attr('y', y).attr('width', W - lw).attr('height', rowH).attr('fill', 'var(--cds-chart-grid)'); return; }
+    let acc = 0;
+    NK.TYPES.forEach((type) => {
+      const r = all.find((d) => d.group === g && d.type === type);
+      if (!r || !r.n) return;
+      const x0 = x(acc / total), x1 = x((acc + r.n) / total); acc += r.n;
+      gEl.append('rect').attr('x', x0).attr('y', y).attr('width', Math.max(0, x1 - x0 - 1)).attr('height', rowH)
+        .style('fill', NK.typeColor(type))
+        .on('pointermove', (ev) => t.show(ev, `${g} · ${type}`, [['인원', `${r.n}명`], ['비율', `${r.pct}%`]]))
+        .on('pointerleave', () => t.hide());
+      if (x1 - x0 > 30) {
+        gEl.append('text').attr('class', 'nk-halo').attr('x', (x0 + x1) / 2).attr('y', y + rowH / 2).attr('dy', '0.35em')
+          .attr('text-anchor', 'middle').style('pointer-events', 'none')
+          .attr('data-source', 'type_dist').attr('data-field', 'pct').attr('data-where', NK.where({ mode: r.mode, group: g, type }))
+          .text(r.pct);
+      }
+    });
+  });
+});
+
+dash.draw('types-note', (el) => {
+  if (!NK.ready(el, ['type_dist'])) return;
+  const u = NK.rows('type_dist').find((r) => r.group === '전체' && r.type === '분류 불가');
+  const parts = ['막대 안의 숫자는 % 입니다.'];
+  el.replaceChildren(parts[0]);
+  if (u && u.n) el.append(' a1 무응답이거나 분석할 수업 응답이 없어 분류하지 못한 학생 ', NK.mark('span', 'type_dist', 'n', { mode: u.mode, group: '전체', type: '분류 불가' }, String(u.n)), '명은 비율에서 뺐습니다.');
+});
+
+/* ---------- 산점도 ---------- */
+dash.draw('types-scatter', (el) => {
+  if (!NK.ready(el, ['students_typed'], { box: true })) return;
+  const pts = NK.rows('students_typed').filter((r) => r.type !== '분류 불가');
+  const W = Math.max(260, el.clientWidth), H = 300, m = { t: 10, r: 12, b: 30, l: 30 };
+  const x = d3.scaleLinear([1, 5], [m.l, W - m.r]);
+  const y = d3.scaleLinear([0.5, 5.5], [H - m.b, m.t]);
+  el.replaceChildren();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', `학생 ${pts.length}명의 수업 경험과 방과후 태도 산점도`);
+  svg.append('rect').attr('x', m.l).attr('width', W - m.l - m.r).attr('y', y(3.5)).attr('height', y(2.5) - y(3.5))
+    .style('fill', 'var(--cds-chart-grid)').style('opacity', 0.6);
+  svg.append('g').attr('transform', `translate(0,${H - m.b})`).call(d3.axisBottom(x).tickValues([1, 2, 3, 3.5, 4, 5]).tickFormat(d3.format('~g')).tickSizeOuter(0));
+  svg.append('g').attr('transform', `translate(${m.l},0)`).call(d3.axisLeft(y).tickValues([1, 2, 3, 4, 5]).tickFormat(d3.format('d')).tickSizeOuter(0));
+  svg.append('line').attr('x1', x(3.5)).attr('x2', x(3.5)).attr('y1', m.t).attr('y2', H - m.b)
+    .style('stroke', 'var(--cds-chart-reference)').style('stroke-dasharray', '4 3');
+  const t = NK.tip(el);
+  svg.append('g').selectAll('circle').data(pts).join('circle')
+    .attr('cx', (d) => x(Math.min(5, Math.max(1, d.exp + NK.jitter(d.rid + 'x') * 0.04))))
+    .attr('cy', (d) => y(d.a1 + NK.jitter(d.rid) * 0.5))
+    .attr('r', (d) => (d.type === '막연한 거부감형' ? 6 : 4.5))
+    .style('fill', (d) => NK.typeColor(d.type)).style('stroke', 'var(--color-panel)').style('stroke-width', 1.2)
+    .on('pointermove', (ev, d) => t.show(ev, d.type, [['수업 경험', d.exp.toFixed(2)], ['a1 태도', String(d.a1)], ['들은 수업', `${d.programs}개`]]))
+    .on('pointerleave', () => t.hide());
+});
+
+/* ---------- 원인 점 그래프 ---------- */
+['a2', 'a3'].forEach((k) => dash.draw('cause-' + k, (el) => {
+  if (!NK.ready(el, ['cause'], { box: true })) return;
+  const rs = NK.rows('cause');
+  const W = Math.max(220, el.clientWidth), H = 84, cy = 36;
+  const x = d3.scaleLinear([0, 100], [12, W - 12]);
+  el.replaceChildren();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img');
+  const v = rs.find((r) => r.group === '막연한 거부감형'), o = rs.find((r) => r.group === '그 외 학생');
+  const f = k + '_score';
+  svg.attr('aria-label', `${k === 'a2' ? '피로' : '공부 인식'} 점수: 막연한 거부감형 ${v?.[f] ?? '없음'}점, 그 외 학생 ${o?.[f] ?? '없음'}점`);
+  svg.append('line').attr('x1', x(0)).attr('x2', x(100)).attr('y1', cy).attr('y2', cy).style('stroke', 'var(--cds-chart-grid)').style('stroke-width', 6).style('stroke-linecap', 'round');
+  [0, 25, 50, 75, 100].forEach((tv) => svg.append('text').attr('x', x(tv)).attr('y', H - 2).attr('text-anchor', tv === 0 ? 'start' : tv === 100 ? 'end' : 'middle').text(tv));
+  const t = NK.tip(el);
+  const hover = (sel, r) => sel.on('pointermove', (ev) => t.show(ev, r.group, [['점수', `${r[f]}점`], ['응답', `${r[k + '_n']}명`]])).on('pointerleave', () => t.hide());
+  rs.filter((r) => r.group !== '막연한 거부감형' && r.group !== '그 외 학생' && r[f] != null).forEach((r) => {
+    hover(svg.append('circle').attr('cx', x(r[f])).attr('cy', cy).attr('r', 4.5).style('fill', NK.typeColor(r.group)).style('opacity', 0.85), r);
+  });
+  const clampX = (px) => Math.max(26, Math.min(W - 26, px));
+  if (o && o[f] != null) {
+    hover(svg.append('circle').attr('cx', x(o[f])).attr('cy', cy).attr('r', 7).style('fill', 'none').style('stroke', 'var(--color-fg)').style('stroke-width', 1.8), o);
+    const tx = svg.append('text').attr('x', clampX(x(o[f]))).attr('y', cy + 22).attr('text-anchor', 'middle');
+    tx.append('tspan').text('그 외 ');
+    tx.append('tspan').attr('data-source', 'cause').attr('data-field', f).attr('data-where', NK.where({ mode: o.mode, group: o.group })).text(o[f]);
+  }
+  if (v && v[f] != null) {
+    hover(svg.append('circle').attr('cx', x(v[f])).attr('cy', cy).attr('r', 8).style('fill', NK.typeColor('막연한 거부감형')).style('stroke', 'var(--color-panel)').style('stroke-width', 1.5), v);
+    const tx = svg.append('text').attr('class', 'nk-strong').attr('x', clampX(x(v[f]))).attr('y', cy - 14).attr('text-anchor', 'middle');
+    tx.append('tspan').text('거부감형 ');
+    tx.append('tspan').attr('data-source', 'cause').attr('data-field', f).attr('data-where', NK.where({ mode: v.mode, group: v.group })).text(v[f]);
+  }
+}));
+
+dash.draw('cause-note', (el) => {
+  if (!NK.ready(el, ['cause'])) return;
+  const v = NK.cause('막연한 거부감형'), o = NK.cause('그 외 학생');
+  if (!v || !o) { el.replaceChildren('—'); return; }
+  el.replaceChildren('막연한 거부감형 ', NK.mark('span', 'cause', 'n', { mode: v.mode, group: v.group }, String(v.n)), '명, 그 외 학생 ',
+    NK.mark('span', 'cause', 'n', { mode: o.mode, group: o.group }, String(o.n)), '명. 점수는 0~100 환산값입니다.');
+  if (v.n > 0 && v.n < 5) el.append(' 거부감형 학생이 5명 미만이라 차이를 단정하기 어렵습니다.');
+});
+</script>
+
+<script>
+/* ---------- 수업별 표 ---------- */
+dash.draw('prog-tbody', (tb) => {
+  if (!NK.ready(tb, ['program_scores'], { table: true })) return;
+  const rs = NK.rows('program_scores');
+  const cols = ['p1', 'q8', 'q7', 't2', 'q4', 'q5', 'q6', 'q9', 'q10_r', 'exp', 'q11'];
+  tb.replaceChildren(...NK.PROGRAMS.map(([code, name]) => {
+    const r = rs.find((d) => d.program === code);
+    const tr = document.createElement('tr');
+    if (!r) return tr;
+    tr.setAttribute('data-key', `${r.mode},${code}`);
+    tr.append(NK.node('td', 'nk-name', name));
+    const n = NK.node('td', 'nk-n' + (r.n > 0 && r.n < 5 ? ' nk-few' : ''), String(r.n));
+    tr.append(n);
+    const sep = { p1: true, q7: true, q4: true, exp: true };
+    cols.forEach((c) => {
+      const b = NK.band(r[c]);
+      const td = NK.node('td', 'nk-cell ' + (b ? 'nk-b-' + b[2] : 'nk-na') + (sep[c] ? ' nk-sep' : ''), r[c] == null ? '–' : String(r[c]));
+      if (b) td.title = b[1];
+      tr.append(td);
+    });
+    return tr;
+  }));
+});
+
+/* ---------- 프로그램 대 강사 ---------- */
+dash.draw('split-lede', (el) => {
+  if (!NK.ready(el, ['split_dist'])) return;
+  const rs = NK.rows('split_dist');
+  const all = rs.filter((r) => r.program === '전체');
+  if (!all.length || !all[0].total) { el.replaceChildren('아직 분류할 수업 응답이 없습니다.'); return; }
+  const pick = (type) => {
+    const c = NK.PROGRAMS.map(([code]) => rs.find((r) => r.program === code && r.split === type))
+      .filter((r) => r && r.total >= 3 && r.n > 0)
+      .sort((a, b) => b.pct - a.pct || b.n - a.n)[0];
+    return c || null;
+  };
+  const w = (r) => ({ mode: r.mode, program: r.program, split: r.split });
+  const t = all.find((r) => r.split === '강사 쪽 불만'), p = all.find((r) => r.split === '프로그램 쪽 불만');
+  el.replaceChildren('전체 수업 응답 ', NK.mark('b', 'split_dist', 'total', w(t), String(t.total)), '건 가운데 강사 쪽 불만은 ',
+    NK.mark('b', 'split_dist', 'n', w(t), String(t.n)), '건, 프로그램 쪽 불만은 ', NK.mark('b', 'split_dist', 'n', w(p), String(p.n)), '건입니다.');
+  const tt = pick('강사 쪽 불만'), pp = pick('프로그램 쪽 불만');
+  if (tt) el.append(' 강사 쪽 불만 비율이 가장 높은 수업은 ', NK.node('b', null, NK.pname[tt.program]), '(', NK.mark('span', 'split_dist', 'pct', w(tt), String(tt.pct)), '%)');
+  if (pp) el.append(tt ? ', ' : ' ', '프로그램 쪽 불만 비율이 가장 높은 수업은 ', NK.node('b', null, NK.pname[pp.program]), '(', NK.mark('span', 'split_dist', 'pct', w(pp), String(pp.pct)), '%)');
+  if (tt || pp) el.append('입니다. 응답 3건 미만인 수업은 비교에서 뺐습니다.');
+});
+
+dash.draw('split-bars', (el) => {
+  if (!NK.ready(el, ['split_dist'], { box: true })) return;
+  const rs = NK.rows('split_dist');
+  const groups = [['전체', '전체']].concat(NK.PROGRAMS);
+  const W = Math.max(260, el.clientWidth), rowH = 24, gap = 14;
+  const H = groups.length * (rowH + gap) - gap + 4;
+  el.replaceChildren();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', '수업별 프로그램 대 강사 유형 비율 누적 막대');
+  const tot = (code) => (rs.find((r) => r.program === code) || {}).total || 0;
+  const labels = svg.append('g').selectAll('text').data(groups).join('text')
+    .attr('x', 0).attr('y', (g, i) => i * (rowH + gap) + rowH / 2).attr('dy', '0.35em')
+    .attr('class', (g) => (g[0] === '전체' ? 'nk-strong' : null)).text((g) => g[1]);
+  const lw = NK.measure(labels) + 10;
+  const endW = 52;
+  const x = d3.scaleLinear([0, 1], [lw, W - endW]);
+  const t = NK.tip(el);
+  groups.forEach(([code, name], i) => {
+    const y = i * (rowH + gap), total = tot(code);
+    const g = svg.append('g');
+    g.append('text').attr('x', W).attr('y', y + rowH / 2).attr('dy', '0.35em').attr('text-anchor', 'end')
+      .text(total ? `${total}건${total < 5 ? ' 적음' : ''}` : '응답 없음');
+    if (!total) { g.append('rect').attr('x', lw).attr('y', y).attr('width', x(1) - lw).attr('height', rowH).style('fill', 'var(--cds-chart-grid)'); return; }
+    let acc = 0;
+    NK.SPLITS.forEach((split) => {
+      const r = rs.find((d) => d.program === code && d.split === split);
+      if (!r || !r.n) return;
+      const x0 = x(acc / total), x1 = x((acc + r.n) / total); acc += r.n;
+      g.append('rect').attr('x', x0).attr('y', y).attr('width', Math.max(0, x1 - x0 - 1)).attr('height', rowH)
+        .style('fill', NK.splitColor(split))
+        .on('pointermove', (ev) => t.show(ev, `${name} · ${split}`, [['응답', `${r.n}건`], ['비율', `${r.pct}%`]]))
+        .on('pointerleave', () => t.hide());
+      if (x1 - x0 > 30) {
+        g.append('text').attr('class', 'nk-halo').attr('x', (x0 + x1) / 2).attr('y', y + rowH / 2).attr('dy', '0.35em')
+          .attr('text-anchor', 'middle').style('pointer-events', 'none')
+          .attr('data-source', 'split_dist').attr('data-field', 'pct').attr('data-where', NK.where({ mode: r.mode, program: code, split }))
+          .text(r.pct);
+      }
+    });
+  });
+});
+
+dash.draw('reasons-tbody', (tb) => {
+  if (!NK.ready(tb, ['c1_reasons'], { table: true })) return;
+  const rs = NK.rows('c1_reasons');
+  const cols = ['r_content', 'r_method', 'r_attitude', 'r_time', 'r_supply', 'r_none'];
+  const teacher = { r_method: true, r_attitude: true };
+  tb.replaceChildren(...[['전체', '전체']].concat(NK.PROGRAMS).map(([code, name]) => {
+    const r = rs.find((d) => d.program === code);
+    const tr = document.createElement('tr');
+    if (!r) return tr;
+    tr.setAttribute('data-key', `${r.mode},${code}`);
+    tr.append(NK.node('td', 'nk-name' + (code === '전체' ? ' nk-total' : ''), name),
+      NK.node('td', 'nk-n' + (r.answered > 0 && r.answered < 5 ? ' nk-few' : ''), String(r.answered)));
+    cols.forEach((c) => {
+      const v = r[c];
+      const td = NK.node('td', 'nk-cell nk-rs' + (teacher[c] ? ' nk-teacher' : '') + (v == null ? ' nk-na' : ''), v == null ? '–' : String(v));
+      if (v != null && c !== 'r_none') td.style.background = `color-mix(in srgb, ${teacher[c] ? 'var(--color-bad)' : 'var(--color-warn)'} ${Math.round(v * 0.5)}%, transparent)`;
+      if (v != null) td.title = `${r[c + '_n']}건 / ${r.answered}건`;
+      tr.append(td);
+    });
+    return tr;
+  }));
+});
+
+/* ---------- 재수강 의향 ---------- */
+dash.draw('rejoin-bars', (el) => {
+  if (!NK.ready(el, ['program_scores'], { box: true })) return;
+  const rs = NK.rows('program_scores');
+  const data = NK.PROGRAMS.map(([code, name]) => ({ name, ...(rs.find((r) => r.program === code) || { program: code, n: 0 }) }));
+  const W = Math.max(260, el.clientWidth), rowH = 22, gap = 12;
+  const H = data.length * (rowH + gap) - gap + 2;
+  el.replaceChildren();
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('role', 'img').attr('aria-label', '수업별 내년 재수강 희망 비율 막대');
+  const labels = svg.append('g').selectAll('text').data(data).join('text')
+    .attr('x', 0).attr('y', (d, i) => i * (rowH + gap) + rowH / 2).attr('dy', '0.35em').attr('class', 'nk-strong').text((d) => d.name);
+  const lw = NK.measure(labels) + 12;
+  const endW = 110;
+  const x = d3.scaleLinear([0, 100], [lw, Math.max(lw + 40, W - endW)]);
+  const t = NK.tip(el);
+  data.forEach((d, i) => {
+    const y = i * (rowH + gap);
+    svg.append('rect').attr('x', lw).attr('y', y).attr('width', x(100) - lw).attr('height', rowH).style('fill', 'var(--cds-chart-grid)').style('opacity', 0.5);
+    if (d.rejoin_pct == null) {
+      svg.append('text').attr('x', lw + 6).attr('y', y + rowH / 2).attr('dy', '0.35em').text('응답 없음');
+      return;
+    }
+    svg.append('rect').attr('x', lw).attr('y', y).attr('width', Math.max(1, x(d.rejoin_pct) - lw)).attr('height', rowH)
+      .style('fill', dash.colors[0])
+      .on('pointermove', (ev) => t.show(ev, d.name, [['재수강 희망', `${d.rejoin_pct}%`], ['그래요 이상', `${d.rejoin_yes}명`], ['q9 응답', `${d.rejoin_n}명`]]))
+      .on('pointerleave', () => t.hide());
+    const tx = svg.append('text').attr('x', x(d.rejoin_pct) + 6).attr('y', y + rowH / 2).attr('dy', '0.35em');
+    tx.append('tspan').attr('class', 'nk-strong').attr('data-source', 'program_scores').attr('data-field', 'rejoin_pct')
+      .attr('data-where', NK.where({ mode: d.mode, program: d.program })).text(d.rejoin_pct);
+    tx.append('tspan').attr('class', 'nk-strong').text('%');
+    tx.append('tspan').text(`  ${d.rejoin_yes}/${d.rejoin_n}명${d.rejoin_n < 5 ? ' 적음' : ''}`);
+  });
+});
+
+/* ---------- 학년별 ---------- */
+dash.draw('grade-tbody', (tb) => {
+  if (!NK.ready(tb, ['grade_scores'], { table: true })) return;
+  const rs = NK.rows('grade_scores');
+  tb.replaceChildren(...rs.map((r) => {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-key', `${r.mode},${r.grade}`);
+    tr.append(NK.node('td', 'nk-name', `${r.grade}학년`), NK.node('td', 'nk-n' + (r.n > 0 && r.n < 5 ? ' nk-few' : ''), String(r.n)));
+    [['a1', true], ['a2', false], ['a3', false], ['exp', true]].forEach(([c, colored]) => {
+      const b = colored ? NK.band(r[c]) : null;
+      tr.append(NK.node('td', 'nk-cell ' + (b ? 'nk-b-' + b[2] : r[c] == null ? 'nk-na' : ''), r[c] == null ? '–' : String(r[c])));
+    });
+    tr.append(NK.node('td', 'nk-n', String(r.vague)));
+    return tr;
+  }));
+});
+
+dash.draw('gp-tbody', (tb) => {
+  if (!NK.ready(tb, ['grade_program'], { table: true })) return;
+  const rs = NK.rows('grade_program');
+  tb.replaceChildren(...rs.map((r) => {
+    const tr = document.createElement('tr');
+    tr.append(NK.node('td', 'nk-name', `${r.grade}학년`));
+    NK.PROGRAMS.forEach(([code]) => {
+      const n = r[code + '_n'];
+      if (!n) { tr.append(NK.node('td', 'nk-cell nk-na', '·')); return; }
+      if (r[code] == null) { const td = NK.node('td', 'nk-cell nk-na', '비공개'); td.title = '수강생 3명 미만'; tr.append(td); return; }
+      const b = NK.band(r[code]);
+      const td = NK.node('td', 'nk-cell nk-b-' + b[2]);
+      td.append(NK.mark('span', 'grade_program', code, { mode: r.mode, grade: r.grade }, String(r[code])), NK.node('small', null, String(n)));
+      td.title = b[1];
+      tr.append(td);
+    });
+    return tr;
+  }));
+});
+</script>
+
+<script>
+/* ---------- 공통 문항 동그라미 ---------- */
+['a1', 'a2', 'a3'].forEach((item) => dash.draw('feel-' + item, (el) => {
+  if (!NK.ready(el, ['common_counts'])) return;
+  const d = dash.data('common_counts');
+  const r = (Array.isArray(d.data) ? d.data : []).find((x) => x.item === item);
+  if (!r || !r.n) { el.replaceChildren('응답이 없습니다'); return; }
+  const color = item === 'a1' ? dash.colors[0] : dash.colors[4] || dash.colors[2];
+  const pds = NK.node('span', 'nk-pds');
+  pds.setAttribute('role', 'img');
+  pds.setAttribute('aria-label', `${r.n}명 중 그래요 이상 ${r.yes}명, 보통 ${r.mid}명, 아니에요 이하 ${r.no}명`);
+  const dot = (cls, bg) => { const i = NK.node('i', 'nk-pd ' + cls); if (bg) i.style.background = bg; return i; };
+  for (let k = 0; k < r.yes; k++) pds.append(dot('nk-pd-yes', color));
+  for (let k = 0; k < r.mid; k++) pds.append(dot('nk-pd-mid', `color-mix(in srgb, ${color} 30%, transparent)`));
+  for (let k = 0; k < r.no; k++) pds.append(dot('nk-pd-no'));
+  const text = NK.node('span', 'nk-feeltext');
+  text.append(NK.mark('span', 'common_counts', 'n', { item }, String(r.n)), '명 중 ', NK.mark('b', 'common_counts', 'yes', { item }, String(r.yes)), '명이 ‘그래요’ 이상');
+  el.replaceChildren(pds, text);
+}));
+
+/* ---------- 개방형 ---------- */
+const nkProg = () => dash.params().oprog || 'samul';
+
+dash.draw('open-note', (el) => {
+  if (!NK.ready(el, ['open_kw'])) return;
+  const p = nkProg();
+  const rs = NK.rows('open_kw').filter((r) => r.program === p);
+  const q12 = rs.find((r) => r.question === 'q12'), q13 = rs.find((r) => r.question === 'q13');
+  const hidden = (q12?.hidden || 0) + (q13?.hidden || 0);
+  el.replaceChildren(`좋았던 것 ${q12?.answers || 0}건 · 아쉬운 점 ${q13?.answers || 0}건`);
+  if (hidden) el.append(` · 수강생 3명 미만 학년의 응답 ${hidden}건은 가렸습니다`);
+});
+
+['q12', 'q13'].forEach((q) => {
+  dash.draw('kw-' + q, (el) => {
+    if (!NK.ready(el, ['open_kw'], { box: true })) return;
+    const p = nkProg();
+    const rs = NK.rows('open_kw').filter((r) => r.program === p && r.question === q).sort((a, b) => b.n - a.n || a.category.localeCompare(b.category, 'ko'));
+    if (!rs.length) { el.replaceChildren(NK.node('p', 'nk-empty', '공개할 수 있는 응답이 없습니다.')); return; }
+    const color = q === 'q12' ? 'var(--color-ok)' : 'var(--color-warn)';
+    el.replaceChildren(...rs.slice(0, 6).map((r) => {
+      const row = NK.node('div', 'nk-kwrow');
+      const track = NK.node('div', 'nk-kwtrack');
+      const bar = NK.node('div', 'nk-kwbar');
+      bar.style.width = Math.round((r.n / r.answers) * 100) + '%';
+      bar.style.background = color;
+      track.append(bar);
+      const cnt = NK.node('span');
+      cnt.append(NK.mark('span', 'open_kw', 'n', { mode: r.mode, program: p, question: q, category: r.category }, String(r.n)), '건');
+      row.append(NK.node('span', null, r.category), track, cnt);
+      row.title = `${r.category}: 응답 ${r.answers}건 중 ${r.n}건`;
+      return row;
+    }));
+  });
+  dash.draw('quotes-' + q, (el) => {
+    if (!NK.ready(el, ['open_quotes'], { box: true })) return;
+    const p = nkProg();
+    const rs = NK.rows('open_quotes').filter((r) => r.program === p && r.question === q).sort((a, b) => a.rank - b.rank);
+    el.replaceChildren(...rs.map((r) => {
+      const li = document.createElement('li');
+      li.append(NK.node('q', null, r.text), NK.node('span', null, r.category));
+      return li;
+    }));
+  });
+});
+</script>

@@ -1,0 +1,12 @@
+{
+  "name": "nakseong-afterschool-survey",
+  "private": true,
+  "description": "낙성초 방과후학교 인식 설문: 설문지 생성 코드, 교원용 대시보드 원본, 공유용 PDF 생성기",
+  "scripts": {
+    "pdf:sample": "node build_pdf.js sample/students.csv sample/responses.json out/낙성초_방과후_설문결과_시안.pdf --sample"
+  },
+  "dependencies": {
+    "@fontsource/gowun-dodum": "^5.0.0",
+    "@fontsource/jua": "^5.0.0"
+  }
+}
