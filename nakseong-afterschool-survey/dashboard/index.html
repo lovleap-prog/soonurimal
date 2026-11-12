@@ -28,9 +28,9 @@
 
 .nk-chip { display: inline-block; font-family: var(--font-anthropic-sans); font-size: 11px; line-height: 1; padding: 4px 7px; border-radius: 999px; color: var(--color-fg); white-space: nowrap; vertical-align: middle; }
 .nk-b-vpos { background: color-mix(in srgb, var(--color-ok) 42%, transparent); }
-.nk-b-pos { background: color-mix(in srgb, var(--color-ok) 20%, transparent); }
+.nk-b-pos { background: color-mix(in srgb, var(--color-ok) 30%, transparent); }
 .nk-b-mid { background: color-mix(in srgb, var(--color-fg-muted) 14%, transparent); }
-.nk-b-neg { background: color-mix(in srgb, var(--color-bad) 20%, transparent); }
+.nk-b-neg { background: color-mix(in srgb, var(--color-bad) 30%, transparent); }
 .nk-b-vneg { background: color-mix(in srgb, var(--color-bad) 42%, transparent); }
 .nk-b-none { background: transparent; color: var(--color-fg-muted); }
 .nk-chip.nk-pass { background: color-mix(in srgb, var(--color-ok) 22%, transparent); }
@@ -88,6 +88,8 @@
 .nk-table td.nk-sep { border-left: 1px solid var(--color-border-line); }
 .nk-table td.nk-na { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
 .nk-table td small { color: var(--color-fg-muted); font-size: 10px; margin-left: 3px; }
+.nk-table td.nk-count { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); white-space: nowrap; }
+.nk-table td.nk-count b { color: var(--color-fg); font-weight: 600; }
 .nk-table td.nk-teacher { font-weight: 600; }
 .nk-table td.nk-total { font-weight: 600; }
 .nk-bands { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
@@ -133,7 +135,7 @@
   <header class="nk-head" id="top">
     <p class="nk-eyebrow">낙성초등학교 · 방과후학교 인식 설문 · 초3~6 방과후 수강생 · 교원용</p>
     <h1 class="nk-title">낙성초 방과후, 아이들의 생각</h1>
-    <p class="nk-lede" id="takeaway" lang="ko"><span data-draw="lede-switch"></span><span id="lede-has">방과후 시간 자체에 대한 태도(a1)는 <b data-draw="lede-a1">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 <b>막연한 거부감형</b>은 <b data-draw="lede-vague">—</b>이고, 이 학생들의 피로(a2)는 <b data-draw="lede-a2">—</b>점, 공부 인식(a3)은 <b data-draw="lede-a3">—</b>점으로 <b data-draw="lede-cause">—</b>.</span><span id="lede-none" hidden>방과후 시간 자체에 대한 태도(a1)는 <b data-draw="lede-a1b">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 막연한 거부감형 학생은 없습니다.</span></p>
+    <p class="nk-lede" id="takeaway" lang="ko"><span data-draw="lede-switch"></span><span id="lede-has">방과후 수업 시간이 있어서 좋다고 답한 학생(a1)은 <b data-draw="lede-a1">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 <b>막연한 거부감형</b>은 <b data-draw="lede-vague">—</b>이고, 이 학생들의 피로(a2)는 <b data-draw="lede-a2">—</b>점, 공부 인식(a3)은 <b data-draw="lede-a3">—</b>점으로 <b data-draw="lede-cause">—</b>.</span><span id="lede-none" hidden>방과후 수업 시간이 있어서 좋다고 답한 학생(a1)은 <b data-draw="lede-a1b">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 막연한 거부감형 학생은 없습니다.</span></p>
     <p class="nk-sample"><strong>시안용 가상 데이터입니다.</strong> 지금 보이는 숫자는 Claude가 만든 테스트 응답(학생 24명, 수업 응답 49건)이며 실제 학생 응답이 아닙니다. 실제 응답이 들어오면 응답 시트를 연결해 모든 숫자를 다시 계산합니다. 이 화면에는 강사 관련 결과가 있으므로 교원끼리만 봅니다.</p>
     <div class="nk-controls">
       <div class="nk-seg" role="group" aria-label="점검 플래그가 붙은 응답">
@@ -149,7 +151,7 @@
       <div class="nk-tile" id="tile-students"><div class="nk-tile-label">응답 학생</div><div class="nk-tile-body dash-skeleton" data-draw="t-students">—</div><p class="nk-src">students 시트</p></div>
       <div class="nk-tile" id="tile-responses"><div class="nk-tile-label">분석한 수업 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-responses">—</div><p class="nk-src">responses 시트 · 학생×수업 1건</p></div>
       <div class="nk-tile" id="tile-flagged"><div class="nk-tile-label">점검 플래그 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-flagged">—</div><p class="nk-src">모순 응답 · 일자 응답</p></div>
-      <div class="nk-tile" id="tile-a1"><div class="nk-tile-label">방과후 태도 (a1)</div><div class="nk-tile-body dash-skeleton" data-draw="t-a1">—</div><p class="nk-src">“방과후 수업 시간이 있는 것이 좋아요”</p></div>
+      <div class="nk-tile" id="tile-a1"><div class="nk-tile-label">방과후 시간이 좋아요 (a1)</div><div class="nk-tile-body dash-skeleton" data-draw="t-a1">—</div><p class="nk-src">‘그래요’ 이상으로 답한 학생</p></div>
       <div class="nk-tile" id="tile-alpha"><div class="nk-tile-label">내적 일관성 α</div><div class="nk-tile-body dash-skeleton" data-draw="t-alpha">—</div><p class="nk-src">q4~q9, q10(역) 7문항 · 기준 .70</p></div>
       <div class="nk-tile" id="tile-r"><div class="nk-tile-label">수렴타당도 r</div><div class="nk-tile-body dash-skeleton" data-draw="t-r">—</div><p class="nk-src">수업 경험 × q11 전반 만족 · 기준 .60</p></div>
     </div>
@@ -221,12 +223,10 @@
     <h2>수업별 영역 점수</h2>
     <p class="nk-desc">문항별 평균을 0~100점으로 바꾼 값입니다(아주 그래요 100 · 그래요 75 · 보통 50 · 아니에요 25 · 전혀 아니에요 0). 지루함(q10)은 거꾸로 채점해 높을수록 덜 지루하다는 뜻입니다. 왼쪽부터 프로그램(활동 자체·수준), 강사(전달력·친절), 수업 전반 문항 순입니다. 수업 경험은 q4~q10 7문항 평균이고, 전반 만족(q11)은 타당도 확인용으로 따로 둡니다.</p>
     <div class="nk-bands" id="band-legend">
-      <span>해석 구간(잠정)</span>
-      <span class="nk-chip nk-b-vpos">매우 긍정 80+</span>
-      <span class="nk-chip nk-b-pos">긍정 60~79</span>
-      <span class="nk-chip nk-b-mid">보통 40~59</span>
-      <span class="nk-chip nk-b-neg">부정 20~39</span>
-      <span class="nk-chip nk-b-vneg">매우 부정 20 미만</span>
+      <span>해석 구간</span>
+      <span class="nk-chip nk-b-pos">긍정 62.5 이상 · 평균이 ‘그래요’에 가까움</span>
+      <span class="nk-chip nk-b-mid">보통 37.5~62.5 · ‘보통이에요’에 가까움</span>
+      <span class="nk-chip nk-b-neg">부정 37.5 미만 · ‘아니에요’에 가까움</span>
     </div>
     <div class="nk-card" id="programs-card">
       <div class="nk-scroll">
@@ -249,7 +249,7 @@
           <tbody data-draw="prog-tbody"></tbody>
         </table>
       </div>
-      <p class="nk-cap">응답이 5건 미만인 수업은 ‘적음’으로 표시합니다. 한두 명의 응답에 점수가 크게 흔들리니 해석에 주의하세요.</p>
+      <p class="nk-cap">응답이 5건 미만인 수업은 점수와 색 대신 ‘그래요 이상으로 답한 인원 / 응답 인원’을 보여 줍니다(수업 경험은 3.5 이상인 인원). 한두 명의 응답에 점수가 크게 흔들리기 때문입니다.</p>
     </div>
   </section>
 
@@ -318,7 +318,7 @@
             <tbody data-draw="grade-tbody"></tbody>
           </table>
         </div>
-        <p class="nk-cap">a2·a3는 높을수록 부정적인 문항이라 색을 칠하지 않았습니다.</p>
+        <p class="nk-cap">a2·a3는 높을수록 부정적인 문항이라 색을 칠하지 않았습니다. 학생이 5명 미만인 학년도 색을 칠하지 않습니다.</p>
       </div>
       <div class="nk-card" id="gp-card">
         <h3>학년 × 수업 수업 경험</h3>
@@ -330,7 +330,7 @@
             <tbody data-draw="gp-tbody" data-source="grade_program"></tbody>
           </table>
         </div>
-        <p class="nk-cap">익명성 보호를 위해 수강생이 3명 미만인 칸은 ‘비공개’로 가립니다. 작은 숫자는 그 칸의 학생 수입니다.</p>
+        <p class="nk-cap">익명성 보호를 위해 수강생이 3명 미만인 칸은 ‘비공개’로 가립니다. 작은 숫자는 그 칸의 학생 수이며, 5명 미만인 칸은 색을 칠하지 않습니다.</p>
       </div>
     </div>
   </section>
@@ -401,7 +401,7 @@
         </div>
         <div>
           <h4>해석 구간과 익명성</h4>
-          <p>80 이상 매우 긍정 · 60~79 긍정 · 40~59 보통 · 20~39 부정 · 20 미만 매우 부정 (잠정안, 확정 필요). 학년×수업 수강생이 3명 미만이면 그 칸 점수와 개방형 응답을 표시하지 않습니다.</p>
+          <p>중심 숫자는 ‘그래요’ 이상으로 답한 인원입니다. 환산 점수는 보조로 쓰며 62.5 이상 긍정 · 37.5~62.5 보통 · 37.5 미만 부정으로 읽습니다(경계는 응답 보기 사이의 중간값). 응답 5건 미만은 색 없이 인원만 봅니다. 학년×수업 수강생이 3명 미만이면 그 칸 점수와 개방형 응답을 표시하지 않습니다.</p>
         </div>
       </div>
     </details>
@@ -501,7 +501,7 @@ dash.calc('summary', {
         flagged: scored.filter((x) => x.flagged).length,
         contradict: scored.filter((x) => x.flag_contradict).length,
         straight: scored.filter((x) => x.flag_straight).length,
-        a1_n: a1s.length, a1_score: toScore(mean(a1s)),
+        a1_n: a1s.length, a1_yes: a1s.filter((v) => v >= 4).length, a1_score: toScore(mean(a1s)),
         alpha: alpha == null ? null : Math.round(alpha * 100) / 100, alpha_n: complete.length,
         r: r == null ? null : Math.round(r * 100) / 100, r_n: pairs.length };
     });
@@ -566,7 +566,12 @@ dash.calc('program_scores', {
       for (const program of programs) {
         const pr = rows.filter((r) => r.program === program);
         const row = { mode, program, n: pr.length, students: new Set(pr.map((r) => r.rid)).size };
-        for (const k of items) row[k] = toScore(mean(pr.map((r) => r[k]).filter((v) => v != null)));
+        for (const k of items) {
+          const v = pr.map((r) => r[k]).filter((x) => x != null);
+          row[k] = toScore(mean(v));
+          row[k + '_n'] = v.length;
+          row[k + '_yes'] = v.filter((x) => x >= (k === 'exp' || k === 'prog' || k === 'teach' ? 3.5 : 4)).length;
+        }
         const q9 = pr.map((r) => r.q9).filter((v) => v != null);
         row.rejoin_n = q9.length;
         row.rejoin_yes = q9.filter((v) => v >= 4).length;
@@ -792,7 +797,7 @@ window.NK = (() => {
     e.textContent = text; return e;
   };
   const node = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  const BANDS = [[80, '매우 긍정', 'vpos'], [60, '긍정', 'pos'], [40, '보통', 'mid'], [20, '부정', 'neg'], [-Infinity, '매우 부정', 'vneg']];
+  const BANDS = [[62.5, '긍정', 'pos'], [37.5, '보통', 'mid'], [-Infinity, '부정', 'neg']];
   const band = (s) => (s == null ? null : BANDS.find(([min]) => s >= min));
   const chip = (s) => { const b = band(s); return node('span', 'nk-chip nk-b-' + (b ? b[2] : 'none'), b ? b[1] : '자료 없음'); };
   const typeColor = (t) => {
@@ -877,7 +882,9 @@ const nkA1 = (el) => {
   if (!NK.ready(el, ['summary'])) return;
   const s = nkSummary();
   if (!s || s.a1_score == null) { el.replaceChildren('—'); return; }
-  el.replaceChildren(NK.band(s.a1_score)[1] + '(', NK.mark('span', 'summary', 'a1_score', { mode: s.mode }, String(s.a1_score)), '점)');
+  const w = { mode: s.mode };
+  el.replaceChildren(NK.mark('span', 'summary', 'a1_n', w, String(s.a1_n)), '명 중 ', NK.mark('span', 'summary', 'a1_yes', w, String(s.a1_yes)), '명(환산 ',
+    NK.mark('span', 'summary', 'a1_score', w, String(s.a1_score)), '점, ' + NK.band(s.a1_score)[1] + ')');
 };
 dash.draw('lede-a1', nkA1);
 dash.draw('lede-a1b', nkA1);
@@ -938,8 +945,8 @@ nkTile('t-responses', (s, w) => [nkBig(NK.mark('span', 'summary', 'responses_use
   nkSub('전체 ', NK.mark('span', 'summary', 'responses_total', w, String(s.responses_total)), '건 중')]);
 nkTile('t-flagged', (s, w) => [nkBig(NK.mark('span', 'summary', 'flagged', w, String(s.flagged)), NK.node('span', 'nk-unit', '건')),
   nkSub(s.mode === 'include' ? '지금은 분석에 포함' : '지금은 분석에서 제외')]);
-nkTile('t-a1', (s, w) => s.a1_score == null ? ['—'] : [nkBig(NK.mark('span', 'summary', 'a1_score', w, String(s.a1_score)), NK.node('span', 'nk-unit', '점'), NK.chip(s.a1_score)),
-  nkSub('응답 ', NK.mark('span', 'summary', 'a1_n', w, String(s.a1_n)), '명 · 0~100 환산')]);
+nkTile('t-a1', (s, w) => s.a1_score == null ? ['—'] : [nkBig(NK.mark('span', 'summary', 'a1_yes', w, String(s.a1_yes)), NK.node('span', 'nk-unit', `명 / ${s.a1_n}명`)),
+  nkSub('환산 ', NK.mark('span', 'summary', 'a1_score', w, String(s.a1_score)), '점 ', NK.chip(s.a1_score))]);
 nkTile('t-alpha', (s, w) => s.alpha == null ? ['계산할 응답이 부족해요'] : [nkBig(NK.mark('span', 'summary', 'alpha', w, s.alpha.toFixed(2)), nkCheck(s.alpha, 0.7)),
   nkSub('7문항 모두 답한 응답 ', NK.mark('span', 'summary', 'alpha_n', w, String(s.alpha_n)), '건')]);
 nkTile('t-r', (s, w) => s.r == null ? ['계산할 응답이 부족해요'] : [nkBig(NK.mark('span', 'summary', 'r', w, s.r.toFixed(2)), nkCheck(s.r, 0.6)),
@@ -1075,12 +1082,23 @@ dash.draw('prog-tbody', (tb) => {
     const r = rs.find((d) => d.program === code);
     const tr = document.createElement('tr');
     if (!r) return tr;
-    tr.setAttribute('data-key', `${r.mode},${code}`);
+    const few = r.n < 5;
+    const w = { mode: r.mode, program: code };
+    if (!few) tr.setAttribute('data-key', `${r.mode},${code}`);
     tr.append(NK.node('td', 'nk-name', name));
-    const n = NK.node('td', 'nk-n' + (r.n > 0 && r.n < 5 ? ' nk-few' : ''), String(r.n));
+    const n = NK.node('td', 'nk-n' + (r.n > 0 && few ? ' nk-few' : ''));
+    if (few) n.append(NK.mark('span', 'program_scores', 'n', w, String(r.n))); else n.textContent = String(r.n);
     tr.append(n);
     const sep = { p1: true, q7: true, q4: true, exp: true };
     cols.forEach((c) => {
+      if (few) {
+        const td = NK.node('td', 'nk-cell nk-count' + (sep[c] ? ' nk-sep' : ''));
+        if (r[c + '_n']) td.append(NK.mark('b', 'program_scores', c + '_yes', w, String(r[c + '_yes'])), '/', NK.mark('span', 'program_scores', c + '_n', w, String(r[c + '_n'])), '명');
+        else td.textContent = '–';
+        td.title = '응답 5건 미만: 그래요 이상 인원 / 응답 인원';
+        tr.append(td);
+        return;
+      }
       const b = NK.band(r[c]);
       const td = NK.node('td', 'nk-cell ' + (b ? 'nk-b-' + b[2] : 'nk-na') + (sep[c] ? ' nk-sep' : ''), r[c] == null ? '–' : String(r[c]));
       if (b) td.title = b[1];
@@ -1221,7 +1239,7 @@ dash.draw('grade-tbody', (tb) => {
     tr.setAttribute('data-key', `${r.mode},${r.grade}`);
     tr.append(NK.node('td', 'nk-name', `${r.grade}학년`), NK.node('td', 'nk-n' + (r.n > 0 && r.n < 5 ? ' nk-few' : ''), String(r.n)));
     [['a1', true], ['a2', false], ['a3', false], ['exp', true]].forEach(([c, colored]) => {
-      const b = colored ? NK.band(r[c]) : null;
+      const b = colored && r.n >= 5 ? NK.band(r[c]) : null;
       tr.append(NK.node('td', 'nk-cell ' + (b ? 'nk-b-' + b[2] : r[c] == null ? 'nk-na' : ''), r[c] == null ? '–' : String(r[c])));
     });
     tr.append(NK.node('td', 'nk-n', String(r.vague)));
@@ -1240,7 +1258,7 @@ dash.draw('gp-tbody', (tb) => {
       if (!n) { tr.append(NK.node('td', 'nk-cell nk-na', '·')); return; }
       if (r[code] == null) { const td = NK.node('td', 'nk-cell nk-na', '비공개'); td.title = '수강생 3명 미만'; tr.append(td); return; }
       const b = NK.band(r[code]);
-      const td = NK.node('td', 'nk-cell nk-b-' + b[2]);
+      const td = NK.node('td', 'nk-cell' + (n >= 5 ? ' nk-b-' + b[2] : ''));
       td.append(NK.mark('span', 'grade_program', code, { mode: r.mode, grade: r.grade }, String(r[code])), NK.node('small', null, String(n)));
       td.title = b[1];
       tr.append(td);
