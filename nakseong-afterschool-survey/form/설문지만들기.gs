@@ -7,6 +7,8 @@ function onOpen() {
   SpreadsheetApp.getUi().createMenu('방과후 설문').addItem('설문지 만들기', '설문지만들기').addToUi();
 }
 
+const VOICE_HELP = '✏️ 글로 써도 되고, 🎙 키보드의 마이크 버튼을 누르고 말해도 돼요. 쓰고 싶은 만큼만 써요.';
+
 function 설문지만들기() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   if (ss.getSheetByName('응답원본')) {
@@ -62,7 +64,7 @@ function 설문지만들기() {
     } else if (type === '선택형') {
       form.addCheckboxItem().setTitle(title).setChoiceValues(changes).setRequired(required);
     } else {
-      form.addParagraphTextItem().setTitle(title).setRequired(required);
+      form.addParagraphTextItem().setTitle(title).setHelpText(VOICE_HELP).setRequired(required);
     }
   };
 
@@ -129,4 +131,16 @@ function 설문지만들기() {
   ss.toast('설문지를 만들었습니다. 안내 탭 B5 주소로 QR 코드를 만드세요.', '완료', 10);
   Logger.log('응답 주소: ' + link);
   Logger.log('편집 주소: ' + form.getEditUrl());
+}
+
+/**
+ * 이미 만든 설문지의 서술형 칸에 말로 답하는 방법 안내를 넣습니다.
+ * 안내 탭 B6의 편집 주소로 설문지를 찾습니다. 여러 번 실행해도 결과는 같습니다.
+ */
+function 서술형마이크안내넣기() {
+  const url = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('안내').getRange('B6').getValue();
+  const form = FormApp.openByUrl(url);
+  const items = form.getItems(FormApp.ItemType.PARAGRAPH_TEXT);
+  items.forEach((it) => it.asParagraphTextItem().setHelpText(VOICE_HELP));
+  SpreadsheetApp.getActiveSpreadsheet().toast('서술형 ' + items.length + '칸에 안내를 넣었습니다.', '완료', 8);
 }

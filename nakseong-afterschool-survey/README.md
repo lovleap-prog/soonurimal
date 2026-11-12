@@ -18,6 +18,7 @@
 | `dashboard/index.html` | 교원용 대시보드(Claude Data 아티팩트)의 페이지 원본. 모든 계산식이 들어 있다 |
 | `build_pdf.js` | 학부모·학생 공유용 PDF 생성기 |
 | `build_qr.js` | 교실용 QR 안내장(A4 1쪽) 생성기. `node build_qr.js <설문 주소> out/QR안내장.pdf` |
+| `docs/build_guide_hwpx.py` | 교사용 문항 안내서(HWPX) 생성기. `pip install python-hwpx` 후 `python3 docs/build_guide_hwpx.py out/문항안내.hwpx` |
 | `sample/` | 가상 응답. 응답 시트의 `students`, `responses` 탭과 같은 형식 |
 
 ## 문항
