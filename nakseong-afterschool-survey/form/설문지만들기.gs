@@ -163,13 +163,14 @@ function 서술형마이크안내넣기() {
 
 /**
  * 이미 배포한 설문지를 링크와 응답 시트는 그대로 둔 채 고칩니다(2026-11 교원 피드백 반영).
- * - q8: 난이도 5단계 보기로 바꿈 / q10, q12: 문장 바꿈 / 이름(필수): 학년 다음에 추가
+ * - q8: 난이도 5단계 보기로 바꿈 / q10, q11, q12: 문장 바꿈 / 이름(필수): 학년 다음에 추가
  * 여러 번 실행해도 결과는 같습니다.
  */
 function 문항수정반영() {
   const OLD = {
     q8: '수업 내용이 나에게 알맞아요. (너무 어렵지도, 너무 쉽지도 않아요)',
     q10: '이 수업은 지루할 때가 많아요.',
+    q11: '나는 이 수업이 마음에 들어요.',
     q12: '이 수업에서 가장 좋았던 것은 무엇인가요?',
     anon: '✏️ 이름은 쓰지 않아요. 누가 답했는지 아무도 몰라요.',
   };
@@ -180,11 +181,12 @@ function 문항수정반영() {
   const text = (id) => String(rows.find((r) => r[0] === id)[2]).trim();
   if (levels.length !== 5) throw new Error('코드표 M2:M6에 난이도 보기 5개가 있어야 합니다.');
 
-  const done = { q8: 0, q10: 0, q12: 0, name: 0 };
+  const done = { q8: 0, q10: 0, q11: 0, q12: 0, name: 0 };
   form.getItems().forEach((it) => {
     const t = it.getTitle();
     if (t === OLD.q8) { it.asMultipleChoiceItem().setTitle(text('q8')).setChoiceValues(levels); done.q8++; }
     else if (t === OLD.q10) { it.setTitle(text('q10')); done.q10++; }
+    else if (t === OLD.q11) { it.setTitle(text('q11')); done.q11++; }
     else if (t === OLD.q12) { it.setTitle(text('q12')); done.q12++; }
   });
   if (!form.getItems().some((it) => it.getTitle() === text('name'))) {
@@ -192,5 +194,5 @@ function 문항수정반영() {
     done.name = 1;
   }
   form.setDescription(form.getDescription().replace(OLD.anon, NAME_LINE));
-  ss.toast('q8 ' + done.q8 + '곳, q10 ' + done.q10 + '곳, q12 ' + done.q12 + '곳을 고치고 이름 문항 ' + done.name + '개를 넣었습니다.', '완료', 12);
+  ss.toast('q8 ' + done.q8 + '곳, q10 ' + done.q10 + '곳, q11 ' + done.q11 + '곳, q12 ' + done.q12 + '곳을 고치고 이름 문항 ' + done.name + '개를 넣었습니다.', '완료', 12);
 }
