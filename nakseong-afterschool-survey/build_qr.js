@@ -41,7 +41,7 @@ h1 em { font-style: normal; color: var(--leaf); }
     <div class="step"><span class="num">2</span>나온 주소를<br>눌러요</div>
     <div class="step"><span class="num">3</span>내 생각대로<br>골라요</div>
   </div>
-  <p class="note"><b>이름은 쓰지 않아요.</b> 누가 답했는지 아무도 몰라요.<br>정답은 없으니 솔직하게 답해 주세요. 한 사람이 한 번만 답해요.</p>
+  <p class="note"><b>이름을 적어요.</b> 내 답은 학교 선생님만 보고, 방과후 강사 선생님께는 알려 주지 않아요.<br>정답은 없으니 솔직하게 답해 주세요. 한 사람이 한 번만 답해요.</p>
 </div></body></html>`;
   const htmlPath = path.resolve(outPath).replace(/\.pdf$/, '.html');
   fs.writeFileSync(htmlPath, html);

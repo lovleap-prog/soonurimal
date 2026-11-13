@@ -128,7 +128,7 @@ section { display: flex; flex-direction: column; gap: 3.5mm; }
     <p class="eyebrow">낙성초등학교 방과후학교 설문 결과 · 초등 3~6학년</p>
     <h1>우리 학교 방과후,<br><em>친구들은 이렇게 생각해요</em></h1>
   </header>
-  <div class="who"><span class="big">${students.length}명</span><p>방과후 수업을 듣는 3~6학년 친구들이 답했어요.<br>3·4학년 ${low.length}명, 5·6학년 ${high.length}명이에요. 이름은 쓰지 않았어요.</p></div>
+  <div class="who"><span class="big">${students.length}명</span><p>방과후 수업을 듣는 3~6학년 친구들이 답했어요.<br>3·4학년 ${low.length}명, 5·6학년 ${high.length}명이에요. 한 사람의 답이 드러나지 않게 모두 합쳐서 보여 줘요.</p></div>
   <section>
     <h2>방과후 시간, 어떻게 느끼나요?</h2>
     <p class="lead">${all.n}명 중 <b>${all.yes}명</b>이 방과후 수업 시간이 있어서 좋다고 답했어요.</p>

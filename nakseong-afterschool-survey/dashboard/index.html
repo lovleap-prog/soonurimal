@@ -221,7 +221,7 @@
 
   <section class="nk-sec" id="programs">
     <h2>수업별 영역 점수</h2>
-    <p class="nk-desc">문항별 평균을 0~100점으로 바꾼 값입니다(아주 그래요 100 · 그래요 75 · 보통 50 · 아니에요 25 · 전혀 아니에요 0). 지루함(q10)은 거꾸로 채점해 높을수록 덜 지루하다는 뜻입니다. 왼쪽부터 프로그램(활동 자체·수준), 강사(전달력·친절), 수업 전반 문항 순입니다. 수업 경험은 q4~q10 7문항 평균이고, 전반 만족(q11)은 타당도 확인용으로 따로 둡니다.</p>
+    <p class="nk-desc">문항별 평균을 0~100점으로 바꾼 값입니다(아주 그래요 100 · 그래요 75 · 보통 50 · 아니에요 25 · 전혀 아니에요 0). 지루함(q10)은 거꾸로 채점해 높을수록 덜 지루하다는 뜻입니다. 왼쪽부터 프로그램(활동 자체·난이도), 강사(전달력·친절), 수업 전반 문항 순입니다. 난이도(q8)는 ‘딱 알맞아요’일수록 높고, 옆 칸에서 어렵다·쉽다고 답한 인원을 따로 봅니다. 수업 경험은 q4~q10 7문항 평균이고, 전반 만족(q11)은 타당도 확인용으로 따로 둡니다.</p>
     <div class="nk-bands" id="band-legend">
       <span>해석 구간</span>
       <span class="nk-chip nk-b-pos">긍정 62.5 이상 · 평균이 ‘그래요’에 가까움</span>
@@ -235,7 +235,8 @@
             <th data-field="program">수업</th>
             <th data-field="n">응답<small>건</small></th>
             <th data-field="p1" class="nk-gp">활동 자체<small>프로그램 p1</small></th>
-            <th data-field="q8">수준 적합<small>프로그램 q8</small></th>
+            <th data-field="q8">난이도 알맞음<small>프로그램 q8</small></th>
+            <th>어렵다 · 쉽다<small>q8 인원</small></th>
             <th data-field="q7" class="nk-gt">전달력<small>강사 q7</small></th>
             <th data-field="t2">친절<small>강사 t2</small></th>
             <th data-field="q4" class="nk-gt">흥미<small>q4</small></th>
@@ -385,7 +386,7 @@
         </div>
         <div>
           <h4>프로그램 대 강사</h4>
-          <p>수업 응답마다 활동 점수 = (p1 + q8) ÷ 2, 선생님 점수 = (q7 + t2) ÷ 2. 둘 다 3.5 이상이면 둘 다 만족, 활동만 3.5 이상이면 강사 쪽 불만, 선생님만 3.5 이상이면 프로그램 쪽 불만, 둘 다 미만이면 둘 다 불만입니다. 각 점수는 두 문항뿐이라 학생이 직접 고른 c1과 함께 읽습니다.</p>
+          <p>q8은 난이도 5단계(너무 어려워요 ~ 너무 쉬워요)로 묻고, 딱 알맞아요 5 · 조금 어려워요/쉬워요 3 · 너무 어려워요/쉬워요 1로 바꿉니다. 수업 응답마다 활동 점수 = (p1 + q8) ÷ 2, 선생님 점수 = (q7 + t2) ÷ 2. 둘 다 3.5 이상이면 둘 다 만족, 활동만 3.5 이상이면 강사 쪽 불만, 선생님만 3.5 이상이면 프로그램 쪽 불만, 둘 다 미만이면 둘 다 불만입니다. 각 점수는 두 문항뿐이라 학생이 직접 고른 c1과 함께 읽습니다.</p>
         </div>
         <div>
           <h4>점검 플래그</h4>
@@ -429,6 +430,8 @@ dash.calc('scored', {
       const straight = answered.length >= 6 && answered.every((v) => v === answered[0]);
       const text = (v) => { const s = String(v ?? '').trim(); return s === '' ? null : s; };
       const p1 = num(r.p1), t2 = num(r.t2);
+      const lv = Number(String(r.q8_level ?? '').trim());
+      const q8_level = String(r.q8_level ?? '').trim() !== '' && [-2, -1, 0, 1, 2].includes(lv) ? lv : null;
       const avg = (a) => { const v = a.filter((x) => x != null); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
       const prog = avg([p1, q.q8]), teach = avg([q.q7, t2]);
       let split = '분류 불가';
@@ -436,7 +439,7 @@ dash.calc('scored', {
         if (prog >= 3.5) split = teach >= 3.5 ? '둘 다 만족' : '강사 쪽 불만';
         else split = teach >= 3.5 ? '프로그램 쪽 불만' : '둘 다 불만';
       }
-      return { rid, grade: gradeOf.get(rid) ?? null, program: String(r.program ?? '').trim(), ...q, q10_r, exp, p1, t2, prog, teach, split,
+      return { rid, grade: gradeOf.get(rid) ?? null, program: String(r.program ?? '').trim(), ...q, q10_r, exp, p1, t2, q8_level, prog, teach, split,
         flag_contradict: contradict, flag_straight: straight, flagged: contradict || straight, q12: text(r.q12), q13: text(r.q13), c1: text(r.c1) };
     });
   },
@@ -572,6 +575,10 @@ dash.calc('program_scores', {
           row[k + '_n'] = v.length;
           row[k + '_yes'] = v.filter((x) => x >= (k === 'exp' || k === 'prog' || k === 'teach' ? 3.5 : 4)).length;
         }
+        const lv = pr.map((r) => r.q8_level).filter((v) => v != null);
+        row.q8_hard = lv.filter((v) => v < 0).length;
+        row.q8_right = lv.filter((v) => v === 0).length;
+        row.q8_easy = lv.filter((v) => v > 0).length;
         const q9 = pr.map((r) => r.q9).filter((v) => v != null);
         row.rejoin_n = q9.length;
         row.rejoin_yes = q9.filter((v) => v >= 4).length;
@@ -1083,26 +1090,35 @@ dash.draw('prog-tbody', (tb) => {
     const tr = document.createElement('tr');
     if (!r) return tr;
     const few = r.n < 5;
-    const w = { mode: r.mode, program: code };
+    const w = { mode: r.mode, program: code };  // 표 칸 표시용
     if (!few) tr.setAttribute('data-key', `${r.mode},${code}`);
     tr.append(NK.node('td', 'nk-name', name));
     const n = NK.node('td', 'nk-n' + (r.n > 0 && few ? ' nk-few' : ''));
     if (few) n.append(NK.mark('span', 'program_scores', 'n', w, String(r.n))); else n.textContent = String(r.n);
     tr.append(n);
     const sep = { p1: true, q7: true, q4: true, exp: true };
+    const dirCell = () => {
+      const d = NK.node('td', 'nk-cell nk-count');
+      if (r.q8_hard + r.q8_right + r.q8_easy) {
+        d.append('어려움 ', NK.mark('b', 'program_scores', 'q8_hard', w, String(r.q8_hard)), ' · 쉬움 ', NK.mark('b', 'program_scores', 'q8_easy', w, String(r.q8_easy)));
+      } else d.textContent = '–';
+      d.title = `너무·조금 어려워요 ${r.q8_hard}명, 딱 알맞아요 ${r.q8_right}명, 너무·조금 쉬워요 ${r.q8_easy}명`;
+      return d;
+    };
     cols.forEach((c) => {
+      let td;
       if (few) {
-        const td = NK.node('td', 'nk-cell nk-count' + (sep[c] ? ' nk-sep' : ''));
+        td = NK.node('td', 'nk-cell nk-count' + (sep[c] ? ' nk-sep' : ''));
         if (r[c + '_n']) td.append(NK.mark('b', 'program_scores', c + '_yes', w, String(r[c + '_yes'])), '/', NK.mark('span', 'program_scores', c + '_n', w, String(r[c + '_n'])), '명');
         else td.textContent = '–';
         td.title = '응답 5건 미만: 그래요 이상 인원 / 응답 인원';
-        tr.append(td);
-        return;
+      } else {
+        const b = NK.band(r[c]);
+        td = NK.node('td', 'nk-cell ' + (b ? 'nk-b-' + b[2] : 'nk-na') + (sep[c] ? ' nk-sep' : ''), r[c] == null ? '–' : String(r[c]));
+        if (b) td.title = b[1];
       }
-      const b = NK.band(r[c]);
-      const td = NK.node('td', 'nk-cell ' + (b ? 'nk-b-' + b[2] : 'nk-na') + (sep[c] ? ' nk-sep' : ''), r[c] == null ? '–' : String(r[c]));
-      if (b) td.title = b[1];
       tr.append(td);
+      if (c === 'q8') tr.append(dirCell());
     });
     return tr;
   }));
