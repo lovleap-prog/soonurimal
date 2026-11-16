@@ -1,12 +1,26 @@
 // 교실에 붙이거나 나눠 줄 QR 안내장(A4 1쪽) 만들기
-// 사용: node build_qr.js <설문 주소> <out.pdf>
+// 사용: node build_qr.js <설문 주소> <out.pdf> [main|english]
+//   english: 이미 본 설문을 마친 3·5학년 영어 수강생용 추가 설문 안내장
 const fs = require('fs');
 const path = require('path');
 const QRCode = require('qrcode');
 const { chromium } = require('playwright');
 
-const [, , url, outPath] = process.argv;
-if (!url || !outPath) { console.error('사용: node build_qr.js <설문 주소> <out.pdf>'); process.exit(1); }
+const [, , url, outPath, kind = 'main'] = process.argv;
+if (!url || !outPath) { console.error('사용: node build_qr.js <설문 주소> <out.pdf> [main|english]'); process.exit(1); }
+const TEXT = {
+  main: {
+    eyebrow: '낙성초등학교 방과후학교 · 3~6학년',
+    title: '방과후 수업,<br><em>내 생각을 들려줘요</em>',
+    note: '<b>이름을 적어요.</b> 내 답은 학교 선생님만 보고, 방과후 강사 선생님께는 알려 주지 않아요.<br>정답은 없으니 솔직하게 답해 주세요. 한 사람이 한 번만 답해요.',
+  },
+  english: {
+    eyebrow: '낙성초등학교 방과후학교 · 영어 수업을 듣는 3·5학년',
+    title: '💬 영어 수업,<br><em>내 생각을 들려줘요</em>',
+    note: '<b>앞에서 적은 이름과 똑같이 적어요.</b> 내 답은 학교 선생님만 보고, 방과후 강사 선생님께는 알려 주지 않아요.<br>영어 수업을 듣는 친구만, 한 사람이 한 번만 답해요.',
+  },
+}[kind];
+if (!TEXT) { console.error('세 번째 값은 main 또는 english'); process.exit(1); }
 const FONT_DIR = path.join(__dirname, 'node_modules', '@fontsource');
 const fontCss = ['jua', 'gowun-dodum'].map((f) => `<link rel="stylesheet" href="file://${path.join(FONT_DIR, f, 'index.css')}">`).join('');
 
@@ -32,8 +46,8 @@ h1 em { font-style: normal; color: var(--leaf); }
 .note { margin-top: auto; font-size: 13pt; color: var(--soft); line-height: 1.6; }
 .note b { color: var(--ink); font-family: var(--display); font-weight: 400; }
 </style></head><body><div class="page">
-  <p class="eyebrow">낙성초등학교 방과후학교 · 3~6학년</p>
-  <h1>방과후 수업,<br><em>내 생각을 들려줘요</em></h1>
+  <p class="eyebrow">${TEXT.eyebrow}</p>
+  <h1>${TEXT.title}</h1>
   <div class="qr">${qr}</div>
   <p class="url">QR이 안 되면 주소를 직접 쳐요 &nbsp;<b>${url.replace(/^https?:\/\//, '')}</b></p>
   <div class="steps">
@@ -41,7 +55,7 @@ h1 em { font-style: normal; color: var(--leaf); }
     <div class="step"><span class="num">2</span>나온 주소를<br>눌러요</div>
     <div class="step"><span class="num">3</span>내 생각대로<br>골라요</div>
   </div>
-  <p class="note"><b>이름을 적어요.</b> 내 답은 학교 선생님만 보고, 방과후 강사 선생님께는 알려 주지 않아요.<br>정답은 없으니 솔직하게 답해 주세요. 한 사람이 한 번만 답해요.</p>
+  <p class="note">${TEXT.note}</p>
 </div></body></html>`;
   const htmlPath = path.resolve(outPath).replace(/\.pdf$/, '.html');
   fs.writeFileSync(htmlPath, html);
@@ -53,5 +67,6 @@ h1 em { font-style: normal; color: var(--leaf); }
   await page.pdf({ path: outPath, format: 'A4', printBackground: true });
   await page.screenshot({ path: outPath.replace(/\.pdf$/, '.png') });
   await browser.close();
+  await QRCode.toFile(outPath.replace(/\.pdf$/, '_QR만.png'), url, { errorCorrectionLevel: 'M', margin: 2, width: 1000, color: { dark: '#22332a', light: '#ffffff' } });
   console.log('overflow px:', overflow);
 })();
