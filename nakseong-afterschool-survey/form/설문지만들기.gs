@@ -11,6 +11,34 @@ const VOICE_HELP = '✏️ 글로 써도 되고, 🎙 키보드의 마이크 버
 const NAME_LINE = '✏️ 이름을 적어요. 누가 어떻게 답했는지는 학교 선생님만 보고, 방과후 강사 선생님께는 알려 주지 않아요.';
 const NAME_HELP = '예: 김하늘. 선생님이 여러분을 더 잘 도와주려고 물어봐요.';
 
+const ICONS = { art: '🎨', unicycle: '🚲', samul: '🥁', guitar: '🎸', violin: '🎻', english: '💬' };
+
+// 문항 탭의 한 줄(r)을 설문지 문항으로 만드는 함수를 돌려줍니다.
+function makeAdder_(form, ss) {
+  const code = ss.getSheetByName('코드표');
+  const col = (a1) => code.getRange(a1).getValues().map((r) => String(r[0]).trim()).filter(String);
+  const scale = col('A2:A6'), grades = col('G2:G5'), changes = col('K2:K7'), levels = col('M2:M6');
+  return (r) => {
+    const title = String(r[2]).trim();
+    const type = String(r[3]).trim();
+    const required = String(r[4]).trim() === '예';
+    if (type === '학년') return form.addMultipleChoiceItem().setTitle(title).setChoiceValues(grades).setRequired(true);
+    if (type === '난이도') return form.addMultipleChoiceItem().setTitle(title).setChoiceValues(levels).setRequired(required);
+    if (type === '5점') return form.addMultipleChoiceItem().setTitle(title).setChoiceValues(scale).setRequired(required);
+    if (type === '선택형') return form.addCheckboxItem().setTitle(title).setChoiceValues(changes).setRequired(required);
+    if (type === '이름') return form.addTextItem().setTitle(title).setHelpText(NAME_HELP).setRequired(true);
+    return form.addParagraphTextItem().setTitle(title).setHelpText(VOICE_HELP).setRequired(required);
+  };
+}
+
+// 수업별 문항을 고르는 문항(5점·난이도)과 쓰는 문항(서술·선택형)으로 나눕니다.
+function splitClassRows_(ss) {
+  const rows = ss.getSheetByName('문항').getRange('A2:E').getValues().filter((r) => r[0] !== '');
+  const perClass = rows.filter((r) => r[1] === '수업별');
+  const isPick = (r) => ['5점', '난이도'].indexOf(String(r[3]).trim()) !== -1;
+  return { rows: rows, pick: perClass.filter(isPick), write: perClass.filter((r) => !isPick(r)) };
+}
+
 // 이름 문항은 설문지와 시트를 연결한 뒤에 넣습니다. 그래야 시트에서 맨 끝 열에 들어가
 // 다른 문항의 열 위치가 바뀌지 않습니다. 설문지 화면에서는 학년 바로 다음으로 옮깁니다.
 function addNameItem_(form, nameTitle, gradeTitle) {
@@ -27,9 +55,9 @@ function 설문지만들기() {
 
   const code = ss.getSheetByName('코드표');
   const scale = code.getRange('A2:A6').getValues().map((r) => String(r[0]).trim());
-  const icons = { art: '🎨', unicycle: '🚲', samul: '🥁', guitar: '🎸', violin: '🎻' };
+  // 처음 다섯 수업만 여기서 만들고, 영어는 시트 연결 뒤에 덧붙입니다(지금 응답 시트와 열 순서를 같게 하려고).
   const programs = code.getRange('D2:E6').getValues().filter((r) => r[0] !== '')
-    .map((r) => ((icons[String(r[0]).trim()] || '') + ' ' + String(r[1]).trim()).trim());
+    .map((r) => ((ICONS[String(r[0]).trim()] || '') + ' ' + String(r[1]).trim()).trim());
   const grades = code.getRange('G2:G5').getValues().map((r) => String(r[0]).trim()).filter(String);
   const yesNo = code.getRange('I2:I3').getValues().map((r) => String(r[0]).trim());
   const changes = code.getRange('K2:K7').getValues().map((r) => String(r[0]).trim()).filter(String);
@@ -40,7 +68,7 @@ function 설문지만들기() {
   const nameRow = rows.find((r) => r[3] === '이름');
   const perClass = rows.filter((r) => r[1] === '수업별');
   if (common.length !== 4 || !nameRow || perClass.length !== 13 || programs.length !== 5 || levels.length !== 5) {
-    throw new Error('문항 수가 달라졌습니다. 공통 4개(학년 포함)와 이름, 수업별 13개, 수업 5개, 난이도 보기 5개여야 응답 변환 수식이 맞습니다.');
+    throw new Error('문항 수가 달라졌습니다. 공통 4개(학년 포함)와 이름, 수업별 13개, 수업 5개(영어 제외), 난이도 보기 5개여야 응답 변환 수식이 맞습니다.');
   }
 
   const form = FormApp.create('🏫 낙성초 방과후 수업, 내 생각은?');
@@ -137,6 +165,7 @@ function 설문지만들기() {
   }
   sheet.setName('응답원본');
   addNameItem_(form, String(nameRow[2]).trim(), String(common[0][2]).trim());
+  appendEnglish_(form, ss);
 
   let link = form.getPublishedUrl();
   try { link = form.shortenFormUrl(link); } catch (e) { /* 짧은 주소를 못 만들면 긴 주소를 씁니다 */ }
@@ -195,4 +224,101 @@ function 문항수정반영() {
   }
   form.setDescription(form.getDescription().replace(OLD.anon, NAME_LINE));
   ss.toast('q8 ' + done.q8 + '곳, q10 ' + done.q10 + '곳, q11 ' + done.q11 + '곳, q12 ' + done.q12 + '곳을 고치고 이름 문항 ' + done.name + '개를 넣었습니다.', '완료', 12);
+}
+
+/**
+ * 이미 배포한 설문지 맨 끝에 '영어' 수업 문항을 덧붙입니다(2026-11 추가).
+ * 새 문항은 응답 시트의 맨 끝 열에 붙어 기존 응답과 열 위치는 그대로입니다. 여러 번 실행해도 결과는 같습니다.
+ */
+function 영어추가() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const form = FormApp.openByUrl(ss.getSheetByName('안내').getRange('B6').getValue());
+  const n = appendEnglish_(form, ss);
+  ss.toast(n ? '설문지 끝에 영어 문항 ' + n + '개를 덧붙였습니다.' : '영어 문항이 이미 있습니다. 바꾼 것이 없습니다.', '완료', 10);
+}
+
+function appendEnglish_(form, ss) {
+  const yesNo = ss.getSheetByName('코드표').getRange('I2:I3').getValues().map((r) => String(r[0]).trim());
+  const name = ICONS.english + ' ' + String(ss.getSheetByName('코드표').getRange('E7').getValue()).trim();
+  const askTitle = name + ' 수업을 듣나요?';
+  if (form.getItems().some((it) => it.getTitle() === askTitle)) return 0;
+  // 지금 마지막 수업(바이올린)의 "듣나요?" 문항과 그 수업 문항 쪽을 찾습니다.
+  const items = form.getItems();
+  const asks = items.filter((it) => it.getType() === FormApp.ItemType.MULTIPLE_CHOICE && it.getTitle().endsWith(' 수업을 듣나요?'));
+  const lastAsk = asks[asks.length - 1].asMultipleChoiceItem();
+  const lastIdx = items.findIndex((it) => it.getId() === lastAsk.getId());
+  const lastClassPage = items[lastIdx + 1].asPageBreakItem();
+
+  const add = makeAdder_(form, ss);
+  const parts = splitClassRows_(ss);
+  const askPage = form.addPageBreakItem().setTitle(name);
+  const ask = form.addMultipleChoiceItem().setTitle(askTitle).setRequired(true);
+  const classPage = form.addPageBreakItem().setTitle(name + ' 수업은 어땠나요?')
+    .setHelpText(name + ' 수업 시간을 떠올리며 하나씩 골라요.');
+  parts.pick.forEach(add);
+  form.addPageBreakItem().setTitle(name + ' 수업, 조금만 더 알려 줘요')
+    .setHelpText('거의 다 왔어요! 글로 쓰는 칸은 쓰고 싶은 만큼만 써도 돼요.');
+  parts.write.forEach(add);
+
+  lastAsk.setChoices([lastAsk.createChoice(yesNo[0], lastClassPage), lastAsk.createChoice(yesNo[1], askPage)]);
+  ask.setChoices([ask.createChoice(yesNo[0], classPage), ask.createChoice(yesNo[1], FormApp.PageNavigationType.SUBMIT)]);
+  return 1 + parts.pick.length + parts.write.length;
+}
+
+/**
+ * 이미 응답한 학생 가운데 영어를 듣는 학생용 짧은 추가 설문(학년·이름 + 영어 13문항)을 만듭니다.
+ * 응답은 이 시트의 '영어추가원본' 탭으로 들어오고, 이름으로 본 응답에 합쳐집니다. 한 번만 실행하세요.
+ */
+function 영어추가설문만들기() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss.getSheetByName('영어추가원본')) throw new Error("'영어추가원본' 탭이 이미 있습니다. 추가 설문이 이미 만들어져 있습니다.");
+  const name = ICONS.english + ' ' + String(ss.getSheetByName('코드표').getRange('E7').getValue()).trim();
+  const parts = splitClassRows_(ss);
+  const gradeRow = parts.rows.find((r) => r[3] === '학년');
+  const nameRow = parts.rows.find((r) => r[3] === '이름');
+
+  const form = FormApp.create(name + ' 수업, 내 생각은? (추가 설문)');
+  form.setDescription([
+    '방과후 설문을 이미 한 친구 가운데 영어 수업을 듣는 친구만 답해요.',
+    '',
+    NAME_LINE,
+    '✏️ 앞에서 적은 이름과 똑같이 적어 주세요.',
+  ].join('\n'));
+  form.setProgressBar(true);
+  form.setCollectEmail(false);
+  form.setAllowResponseEdits(false);
+  form.setShowLinkToRespondAgain(false);
+  form.setConfirmationMessage('🎉 끝! 답해 줘서 고마워요.');
+  try { form.setRequireLogin(false); } catch (e) { /* 개인 Google 계정에는 없는 설정입니다 */ }
+
+  const add = makeAdder_(form, ss);
+  add(gradeRow);
+  add(nameRow);
+  form.addPageBreakItem().setTitle(name + ' 수업은 어땠나요?').setHelpText(name + ' 수업 시간을 떠올리며 하나씩 골라요.');
+  parts.pick.forEach(add);
+  form.addPageBreakItem().setTitle(name + ' 수업, 조금만 더 알려 줘요')
+    .setHelpText('거의 다 왔어요! 글로 쓰는 칸은 쓰고 싶은 만큼만 써도 돼요.');
+  parts.write.forEach(add);
+
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+  let sheet = null;
+  for (let i = 0; i < 20 && !sheet; i++) {
+    SpreadsheetApp.flush();
+    sheet = SpreadsheetApp.openById(ss.getId()).getSheets().find((sh) => {
+      const url = sh.getFormUrl();
+      if (!url) return false;
+      try { return FormApp.openByUrl(url).getId() === form.getId(); } catch (e) { return false; }
+    }) || null;
+    if (!sheet) Utilities.sleep(1500);
+  }
+  if (!sheet) throw new Error("응답 탭을 찾지 못했습니다. 새로 생긴 '설문지 응답' 탭의 이름을 직접 '영어추가원본'으로 바꿔 주세요.");
+  sheet.setName('영어추가원본');
+
+  let link = form.getPublishedUrl();
+  try { link = form.shortenFormUrl(link); } catch (e) { /* 긴 주소를 씁니다 */ }
+  const guide = ss.getSheetByName('안내');
+  guide.getRange('A7').setValue('영어 추가 설문 (3·5학년 영어 수강생만)');
+  guide.getRange('B7').setValue(link);
+  guide.getRange('C7').setValue(form.getEditUrl());
+  ss.toast('영어 추가 설문을 만들었습니다. 안내 탭 B7 주소를 영어를 듣는 3·5학년에게 주세요.', '완료', 12);
 }
