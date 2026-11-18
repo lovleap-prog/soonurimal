@@ -136,11 +136,11 @@
     <p class="nk-eyebrow">낙성초등학교 · 방과후학교 인식 설문 · 초3~6 방과후 수강생 · 교원용</p>
     <h1 class="nk-title">낙성초 방과후, 아이들의 생각</h1>
     <p class="nk-lede" id="takeaway" lang="ko"><span data-draw="lede-switch"></span><span id="lede-has">방과후 수업 시간이 있어서 좋다고 답한 학생(a1)은 <b data-draw="lede-a1">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 <b>막연한 거부감형</b>은 <b data-draw="lede-vague">—</b>이고, 이 학생들의 피로(a2)는 <b data-draw="lede-a2">—</b>점, 공부 인식(a3)은 <b data-draw="lede-a3">—</b>점으로 <b data-draw="lede-cause">—</b>.</span><span id="lede-none" hidden>방과후 수업 시간이 있어서 좋다고 답한 학생(a1)은 <b data-draw="lede-a1b">—</b>입니다. 수업 경험은 좋은데 방과후가 싫다고 답한 막연한 거부감형 학생은 없습니다.</span></p>
-    <p class="nk-sample"><strong>시안용 가상 데이터입니다.</strong> 지금 보이는 숫자는 Claude가 만든 테스트 응답(학생 24명, 수업 응답 49건)이며 실제 학생 응답이 아닙니다. 실제 응답이 들어오면 응답 시트를 연결해 모든 숫자를 다시 계산합니다. 이 화면에는 강사 관련 결과가 있으므로 교원끼리만 봅니다.</p>
+    <p class="nk-sample"><strong>실제 응답입니다(2026년 11월).</strong> 3~6학년 방과후 수강생 24명 전원, 수업 응답 121건. 응답 시트에서 설문을 마친 뒤 한 번 옮겨 왔습니다. 강사 관련 결과와 학생 글이 있으므로 교원끼리만 봅니다.</p>
     <div class="nk-controls">
-      <div class="nk-seg" role="group" aria-label="점검 플래그가 붙은 응답">
-        <button type="button" id="flag-exclude" data-flag="exclude" aria-pressed="true">플래그 응답 제외</button>
-        <button type="button" id="flag-include" data-flag="include" aria-pressed="false">포함</button>
+      <div class="nk-seg" role="group" aria-label="일자 응답을 넣을지">
+        <button type="button" id="flag-include" data-flag="include" aria-pressed="true">모든 응답</button>
+        <button type="button" id="flag-exclude" data-flag="exclude" aria-pressed="false">일자 응답 빼고</button>
       </div>
       <span class="nk-flagnote" data-draw="flag-note">—</span>
     </div>
@@ -150,9 +150,9 @@
     <div class="nk-tiles">
       <div class="nk-tile" id="tile-students"><div class="nk-tile-label">응답 학생</div><div class="nk-tile-body dash-skeleton" data-draw="t-students">—</div><p class="nk-src">students 시트</p></div>
       <div class="nk-tile" id="tile-responses"><div class="nk-tile-label">분석한 수업 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-responses">—</div><p class="nk-src">responses 시트 · 학생×수업 1건</p></div>
-      <div class="nk-tile" id="tile-flagged"><div class="nk-tile-label">점검 플래그 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-flagged">—</div><p class="nk-src">모순 응답 · 일자 응답</p></div>
+      <div class="nk-tile" id="tile-flagged"><div class="nk-tile-label">일자 응답</div><div class="nk-tile-body dash-skeleton" data-draw="t-flagged">—</div><p class="nk-src">8문항 가운데 7개 이상 같은 답</p></div>
       <div class="nk-tile" id="tile-a1"><div class="nk-tile-label">방과후 시간이 좋아요 (a1)</div><div class="nk-tile-body dash-skeleton" data-draw="t-a1">—</div><p class="nk-src">‘그래요’ 이상으로 답한 학생</p></div>
-      <div class="nk-tile" id="tile-alpha"><div class="nk-tile-label">내적 일관성 α</div><div class="nk-tile-body dash-skeleton" data-draw="t-alpha">—</div><p class="nk-src">q4~q9, q10(역) 7문항 · 기준 .70</p></div>
+      <div class="nk-tile" id="tile-alpha"><div class="nk-tile-label">내적 일관성 α</div><div class="nk-tile-body dash-skeleton" data-draw="t-alpha">—</div><p class="nk-src">q4·q5·q6·q7·q9 5문항 · 기준 .70</p></div>
       <div class="nk-tile" id="tile-r"><div class="nk-tile-label">수렴타당도 r</div><div class="nk-tile-body dash-skeleton" data-draw="t-r">—</div><p class="nk-src">수업 경험 × q11 전반 만족 · 기준 .60</p></div>
     </div>
   </section>
@@ -221,7 +221,7 @@
 
   <section class="nk-sec" id="programs">
     <h2>수업별 영역 점수</h2>
-    <p class="nk-desc">문항별 평균을 0~100점으로 바꾼 값입니다(아주 그래요 100 · 그래요 75 · 보통 50 · 아니에요 25 · 전혀 아니에요 0). 지루함(q10)은 거꾸로 채점해 높을수록 덜 지루하다는 뜻입니다. 왼쪽부터 프로그램(활동 자체·난이도), 강사(전달력·친절), 수업 전반 문항 순입니다. 난이도(q8)는 ‘딱 알맞아요’일수록 높고, 옆 칸에서 어렵다·쉽다고 답한 인원을 따로 봅니다. 수업 경험은 q4~q10 7문항 평균이고, 전반 만족(q11)은 타당도 확인용으로 따로 둡니다.</p>
+    <p class="nk-desc">문항별 평균을 0~100점으로 바꾼 값입니다(아주 그래요 100 · 그래요 75 · 보통 50 · 아니에요 25 · 전혀 아니에요 0). q10(길게 느껴져요)은 거꾸로 채점해 높을수록 짧게 느낀다는 뜻이지만, 좋은 뜻으로 읽은 학생이 많아 참고로만 봅니다. 왼쪽부터 프로그램(활동 자체·난이도), 강사(전달력·친절), 수업 전반 문항 순입니다. 난이도(q8)는 ‘딱 알맞아요’일수록 높고, 옆 칸에서 어렵다·쉽다고 답한 인원을 따로 봅니다. 수업 경험은 q4~q10 7문항 평균이고, 전반 만족(q11)은 타당도 확인용으로 따로 둡니다.</p>
     <div class="nk-bands" id="band-legend">
       <span>해석 구간</span>
       <span class="nk-chip nk-b-pos">긍정 62.5 이상 · 평균이 ‘그래요’에 가까움</span>
@@ -235,7 +235,7 @@
             <th data-field="program">수업</th>
             <th data-field="n">응답<small>건</small></th>
             <th data-field="p1" class="nk-gp">활동 자체<small>프로그램 p1</small></th>
-            <th data-field="q8">난이도 알맞음<small>프로그램 q8</small></th>
+            <th data-field="q8">난이도 알맞음<small>참고 q8</small></th>
             <th>어렵다 · 쉽다<small>q8 인원</small></th>
             <th data-field="q7" class="nk-gt">전달력<small>강사 q7</small></th>
             <th data-field="t2">친절<small>강사 t2</small></th>
@@ -243,8 +243,8 @@
             <th data-field="q5">활동<small>q5</small></th>
             <th data-field="q6">성장<small>q6</small></th>
             <th data-field="q9">재수강<small>q9</small></th>
-            <th data-field="q10_r">덜 지루함<small>q10 역</small></th>
-            <th data-field="exp">수업 경험<small>7문항</small></th>
+            <th data-field="q10_r">짧게 느낌<small>참고 q10 역</small></th>
+            <th data-field="exp">수업 경험<small>5문항</small></th>
             <th data-field="q11">전반 만족<small>q11</small></th>
           </tr></thead>
           <tbody data-draw="prog-tbody"></tbody>
@@ -256,7 +256,7 @@
 
   <section class="nk-sec" id="split">
     <h2>수업에 대한 불만, 프로그램 때문인가 강사 때문인가</h2>
-    <p class="nk-desc">수업 응답마다 활동 점수(p1 활동 자체, q8 수준 적합 평균)와 선생님 점수(q7 전달력, t2 친절 평균)를 3.5 기준으로 나눕니다. 활동은 좋은데 선생님 점수만 낮으면 <b>강사 쪽 불만</b>, 선생님은 좋은데 활동 점수만 낮으면 <b>프로그램 쪽 불만</b>입니다. 오른쪽 표는 학생이 직접 고른 “바뀌었으면 하는 것”이라 두 결과가 같은 방향인지 함께 봅니다.</p>
+    <p class="nk-desc">수업 응답마다 활동 점수(p1 활동 자체, q5 직접 해 보는 활동 평균)와 선생님 점수(q7 전달력, t2 친절 평균)를 3.5 기준으로 나눕니다. 활동은 좋은데 선생님 점수만 낮으면 <b>강사 쪽 불만</b>, 선생님은 좋은데 활동 점수만 낮으면 <b>프로그램 쪽 불만</b>입니다. 오른쪽 표는 학생이 직접 고른 “바뀌었으면 하는 것”이라 두 결과가 같은 방향인지 함께 봅니다.</p>
     <p class="nk-lede" id="split-lede" data-draw="split-lede">—</p>
     <div class="nk-legend" id="split-legend">
       <span><i class="nk-sw" data-split-swatch="둘 다 만족"></i>둘 다 만족</span>
@@ -326,7 +326,7 @@
         <div class="nk-scroll">
           <table class="nk-table" aria-label="학년과 수업별 수업 경험 점수">
             <thead><tr>
-              <th>학년</th><th>🎨 미술회화</th><th>🚲 외발자전거</th><th>🥁 사물놀이</th><th>🎸 기타</th><th>🎻 바이올린</th>
+              <th>학년</th><th>🎨 미술회화</th><th>🚲 외발자전거</th><th>🥁 사물놀이</th><th>🎸 기타</th><th>🎻 바이올린</th><th>💬 영어</th>
             </tr></thead>
             <tbody data-draw="gp-tbody" data-source="grade_program"></tbody>
           </table>
@@ -346,6 +346,7 @@
         <option value="samul">🥁 사물놀이</option>
         <option value="guitar">🎸 기타(악기)</option>
         <option value="violin">🎻 바이올린</option>
+        <option value="english">💬 영어</option>
       </select>
       <span class="nk-cap" data-draw="open-note">—</span>
     </div>
@@ -374,7 +375,7 @@
         </div>
         <div>
           <h4>수업 경험 점수</h4>
-          <p>응답마다 q4~q9와 q10_r 7문항 평균(4문항 이상 답한 경우). q11은 타당도 기준이라 넣지 않습니다. 학생의 수업 경험은 그 학생이 들은 수업 점수의 평균입니다.</p>
+          <p>응답마다 q4 흥미 · q5 활동 · q6 성장 · q7 전달력 · q9 재수강 5문항 평균(3문항 이상 답한 경우). q11은 타당도 기준이라 넣지 않습니다. 학생의 수업 경험은 그 학생이 들은 수업 점수의 평균입니다.</p><p>처음에는 q8과 q10_r을 더한 7문항이었으나, 실제 응답에서 두 문항이 나머지와 따로 움직여(나머지 문항 합과의 상관 q8 −.04, q10_r .11) 뺐습니다. 5문항 α .82, q11과의 r .80으로 7문항(α .65, r .73)보다 낫습니다. q8은 쉽다고 답할수록 수업을 더 좋아했고(‘너무 쉬워요’ 학생의 q11 평균 4.3), q10은 “길게 느껴져요”를 “오래 하고 싶다”로 읽은 학생이 있었습니다(q4와 어긋난 응답 22건). 두 문항은 표에 참고로 남깁니다.</p>
         </div>
         <div>
           <h4>유형 분류</h4>
@@ -386,19 +387,19 @@
         </div>
         <div>
           <h4>프로그램 대 강사</h4>
-          <p>q8은 난이도 5단계(너무 어려워요 ~ 너무 쉬워요)로 묻고, 딱 알맞아요 5 · 조금 어려워요/쉬워요 3 · 너무 어려워요/쉬워요 1로 바꿉니다. 수업 응답마다 활동 점수 = (p1 + q8) ÷ 2, 선생님 점수 = (q7 + t2) ÷ 2. 둘 다 3.5 이상이면 둘 다 만족, 활동만 3.5 이상이면 강사 쪽 불만, 선생님만 3.5 이상이면 프로그램 쪽 불만, 둘 다 미만이면 둘 다 불만입니다. 각 점수는 두 문항뿐이라 학생이 직접 고른 c1과 함께 읽습니다.</p>
+          <p>q8은 난이도 5단계(너무 어려워요 ~ 너무 쉬워요)로 묻고, 딱 알맞아요 5 · 조금 어려워요/쉬워요 3 · 너무 어려워요/쉬워요 1로 바꿉니다. q8은 점수에 넣지 않고 어렵다·알맞다·쉽다 인원으로 따로 봅니다. 수업 응답마다 활동 점수 = (p1 + q5) ÷ 2, 선생님 점수 = (q7 + t2) ÷ 2. 둘 다 3.5 이상이면 둘 다 만족, 활동만 3.5 이상이면 강사 쪽 불만, 선생님만 3.5 이상이면 프로그램 쪽 불만, 둘 다 미만이면 둘 다 불만입니다. 각 점수는 두 문항뿐이라 학생이 직접 고른 c1과 함께 읽습니다.</p>
         </div>
         <div>
           <h4>점검 플래그</h4>
           <ul>
-            <li>모순: q4 ≥ 4 이고 q10 ≥ 4, 또는 q4 ≤ 2 이고 q10 ≤ 2</li>
-            <li>일자 응답: q4~q11 응답이 6개 이상이고 모두 같은 값</li>
-            <li>기본은 제외, 위쪽 버튼으로 포함해 볼 수 있습니다</li>
+            <li>q10 어긋남: q4 ≥ 4 이고 q10 ≥ 4, 또는 q4 ≤ 2 이고 q10 ≤ 2. q10을 점수에서 뺐으므로 응답은 그대로 씁니다</li>
+            <li>일자 응답: q4·q5·q6·q7·q9·q11·p1·t2 가운데 7개 이상 답했고 모두 같은 값</li>
+            <li>기본은 모든 응답을 씁니다. 아주 좋아하는 수업에 모두 ‘아주 그래요’를 고른 경우가 많아, 빼면 좋아하는 수업 점수가 낮아지기 때문입니다. 위쪽 버튼으로 빼고 볼 수 있습니다</li>
           </ul>
         </div>
         <div>
           <h4>신뢰도·타당도</h4>
-          <p>Cronbach α는 7문항에 모두 답한 응답으로 계산합니다(기준 .70). 수렴타당도는 수업 경험 점수와 q11의 피어슨 r입니다(기준 .60). 두 값 모두 학년·수업으로 나누지 않고 전체 응답으로만 계산합니다.</p>
+          <p>Cronbach α는 수업 경험 5문항에 모두 답한 응답으로 계산합니다(기준 .70). 수렴타당도는 수업 경험 점수와 q11의 피어슨 r입니다(기준 .60). 두 값 모두 학년·수업으로 나누지 않고 전체 응답으로만 계산합니다.</p>
         </div>
         <div>
           <h4>해석 구간과 익명성</h4>
@@ -413,7 +414,7 @@
 /* ---------- 계산 ---------- */
 dash.calc('scored', {
   title: '수업 응답 채점',
-  description: '수업 응답마다 역채점(q10_r), 수업 경험 점수(exp), 점검 플래그를 붙입니다.',
+  description: '수업 응답마다 수업 경험 점수(exp: q4·q5·q6·q7·q9), 활동·선생님 점수, 점검 플래그를 붙입니다. q8(난이도)과 q10(길게 느껴짐)은 점수에 넣지 않고 따로 봅니다.',
   inputs: ['responses', 'students'],
   fn: (responses, students) => {
     const num = (v) => { const s = String(v ?? '').trim(); const n = Number(s); return s !== '' && Number.isInteger(n) && n >= 1 && n <= 5 ? n : null; };
@@ -423,24 +424,24 @@ dash.calc('scored', {
       const rid = String(r.rid ?? '').trim();
       const q = Object.fromEntries(items.map((k) => [k, num(r[k])]));
       const q10_r = q.q10 == null ? null : 6 - q.q10;
-      const expItems = [q.q4, q.q5, q.q6, q.q7, q.q8, q.q9, q10_r].filter((v) => v != null);
-      const exp = expItems.length >= 4 ? expItems.reduce((a, b) => a + b, 0) / expItems.length : null;
+      const expItems = [q.q4, q.q5, q.q6, q.q7, q.q9].filter((v) => v != null);
+      const exp = expItems.length >= 3 ? expItems.reduce((a, b) => a + b, 0) / expItems.length : null;
       const contradict = q.q4 != null && q.q10 != null && ((q.q4 >= 4 && q.q10 >= 4) || (q.q4 <= 2 && q.q10 <= 2));
-      const answered = items.map((k) => q[k]).filter((v) => v != null);
-      const straight = answered.length >= 6 && answered.every((v) => v === answered[0]);
+      const answered = [q.q4, q.q5, q.q6, q.q7, q.q9, q.q11, num(r.p1), num(r.t2)].filter((v) => v != null);
+      const straight = answered.length >= 7 && answered.every((v) => v === answered[0]);
       const text = (v) => { const s = String(v ?? '').trim(); return s === '' ? null : s; };
       const p1 = num(r.p1), t2 = num(r.t2);
       const lv = Number(String(r.q8_level ?? '').trim());
       const q8_level = String(r.q8_level ?? '').trim() !== '' && [-2, -1, 0, 1, 2].includes(lv) ? lv : null;
       const avg = (a) => { const v = a.filter((x) => x != null); return v.length ? v.reduce((x, y) => x + y, 0) / v.length : null; };
-      const prog = avg([p1, q.q8]), teach = avg([q.q7, t2]);
+      const prog = avg([p1, q.q5]), teach = avg([q.q7, t2]);
       let split = '분류 불가';
       if (prog != null && teach != null) {
         if (prog >= 3.5) split = teach >= 3.5 ? '둘 다 만족' : '강사 쪽 불만';
         else split = teach >= 3.5 ? '프로그램 쪽 불만' : '둘 다 불만';
       }
       return { rid, grade: gradeOf.get(rid) ?? null, program: String(r.program ?? '').trim(), ...q, q10_r, exp, p1, t2, q8_level, prog, teach, split,
-        flag_contradict: contradict, flag_straight: straight, flagged: contradict || straight, q12: text(r.q12), q13: text(r.q13), c1: text(r.c1) };
+        flag_contradict: contradict, flag_straight: straight, flagged: straight, q12: text(r.q12), q13: text(r.q13), c1: text(r.c1) };
     });
   },
 });
@@ -479,7 +480,7 @@ dash.calc('summary', {
     const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
     const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
     const variance = (a) => { const m = mean(a); return a.reduce((s, v) => s + (v - m) ** 2, 0) / (a.length - 1); };
-    const keys = ['q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10_r'];
+    const keys = ['q4', 'q5', 'q6', 'q7', 'q9'];
     return ['exclude', 'include'].map((mode) => {
       const rows = mode === 'include' ? scored : scored.filter((r) => !r.flagged);
       const st = typed.filter((t) => t.mode === mode);
@@ -561,7 +562,7 @@ dash.calc('program_scores', {
   fn: (scored) => {
     const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
     const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
-    const programs = ['art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const programs = ['art', 'unicycle', 'samul', 'guitar', 'violin', 'english'];
     const items = ['q4', 'q5', 'q6', 'q7', 'q8', 'q9', 'q10_r', 'q11', 'exp', 'p1', 't2', 'prog', 'teach'];
     const out = [];
     for (const mode of ['exclude', 'include']) {
@@ -605,11 +606,11 @@ dash.calc('common_counts', {
 
 dash.calc('split_dist', {
   title: '프로그램 대 강사 유형',
-  description: '수업 응답마다 활동 점수(p1·q8)와 선생님 점수(q7·t2)를 3.5 기준으로 나눈 네 유형의 인원과 비율.',
+  description: '수업 응답마다 활동 점수(p1·q5)와 선생님 점수(q7·t2)를 3.5 기준으로 나눈 네 유형의 인원과 비율.',
   inputs: ['scored'],
   fn: (scored) => {
     const types = ['둘 다 만족', '강사 쪽 불만', '프로그램 쪽 불만', '둘 다 불만'];
-    const groups = ['전체', 'art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const groups = ['전체', 'art', 'unicycle', 'samul', 'guitar', 'violin', 'english'];
     const out = [];
     for (const mode of ['exclude', 'include']) {
       const rows = (mode === 'include' ? scored : scored.filter((r) => !r.flagged)).filter((r) => r.split !== '분류 불가');
@@ -632,7 +633,7 @@ dash.calc('c1_reasons', {
   fn: (scored) => {
     const reasons = [['r_content', '하는 활동이나 배우는 내용'], ['r_method', '선생님이 가르치는 방법'], ['r_attitude', '선생님의 말투나 태도'],
       ['r_time', '수업 시간이나 요일'], ['r_supply', '준비물·악기·장소'], ['r_none', '바뀌었으면 하는 것 없음']];
-    const groups = ['전체', 'art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const groups = ['전체', 'art', 'unicycle', 'samul', 'guitar', 'violin', 'english'];
     const out = [];
     for (const mode of ['exclude', 'include']) {
       const rows = (mode === 'include' ? scored : scored.filter((r) => !r.flagged)).filter((r) => r.c1);
@@ -681,7 +682,7 @@ dash.calc('grade_program', {
   fn: (scored) => {
     const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
     const toScore = (m) => (m == null ? null : Math.round(((m - 1) / 4) * 100));
-    const programs = ['art', 'unicycle', 'samul', 'guitar', 'violin'];
+    const programs = ['art', 'unicycle', 'samul', 'guitar', 'violin', 'english'];
     const out = [];
     for (const mode of ['exclude', 'include']) {
       const rows = (mode === 'include' ? scored : scored.filter((r) => !r.flagged)).filter((r) => r.exp != null);
@@ -791,9 +792,9 @@ dash.calc('open_quotes', {
 <script>
 /* ---------- 공통 도구 ---------- */
 window.NK = (() => {
-  const PROGRAMS = [['art', '🎨 미술회화'], ['unicycle', '🚲 외발자전거'], ['samul', '🥁 사물놀이'], ['guitar', '🎸 기타(악기)'], ['violin', '🎻 바이올린']];
+  const PROGRAMS = [['art', '🎨 미술회화'], ['unicycle', '🚲 외발자전거'], ['samul', '🥁 사물놀이'], ['guitar', '🎸 기타(악기)'], ['violin', '🎻 바이올린'], ['english', '💬 영어']];
   const TYPES = ['만족형', '프로그램 불만형', '막연한 거부감형', '전반 불만형', '중립'];
-  const mode = () => (dash.params().flagged === 'include' ? 'include' : 'exclude');
+  const mode = () => (dash.params().flagged === 'exclude' ? 'exclude' : 'include');
   const rows = (id) => { const d = dash.data(id); return d.status === 'ok' && Array.isArray(d.data) ? d.data.filter((r) => r.mode === mode()) : []; };
   const enc = (s) => String(s).replace(/%/g, '%25').replace(/&/g, '%26').replace(/=/g, '%3D');
   const where = (o) => Object.entries(o).map(([k, v]) => enc(k) + '=' + enc(v)).join('&');
@@ -930,9 +931,9 @@ dash.draw('flag-note', (el) => {
   const s = nkSummary();
   if (!s) { el.replaceChildren('—'); return; }
   const w = { mode: s.mode };
-  el.replaceChildren('점검 플래그 응답 ', NK.mark('b', 'summary', 'flagged', w, String(s.flagged)), '건(모순 ',
-    NK.mark('span', 'summary', 'contradict', w, String(s.contradict)), ' · 일자 응답 ', NK.mark('span', 'summary', 'straight', w, String(s.straight)), ')을 ',
-    s.mode === 'include' ? '분석에 포함했습니다' : '분석에서 뺐습니다');
+  el.replaceChildren('모든 문항에 같은 답을 고른 일자 응답 ', NK.mark('b', 'summary', 'straight', w, String(s.straight)), '건을 ',
+    s.mode === 'include' ? '분석에 넣었습니다' : '분석에서 뺐습니다', '. q4와 q10이 어긋난 응답 ',
+    NK.mark('span', 'summary', 'contradict', w, String(s.contradict)), '건은 q10을 점수에서 빼서 그대로 씁니다.');
 });
 
 /* ---------- 요약 타일 ---------- */
@@ -950,12 +951,12 @@ nkTile('t-students', (s, w) => [nkBig(NK.mark('span', 'summary', 'students', w, 
   nkSub('유형 분류된 학생 ', NK.mark('span', 'summary', 'typed', w, String(s.typed)), '명')]);
 nkTile('t-responses', (s, w) => [nkBig(NK.mark('span', 'summary', 'responses_used', w, String(s.responses_used)), NK.node('span', 'nk-unit', '건')),
   nkSub('전체 ', NK.mark('span', 'summary', 'responses_total', w, String(s.responses_total)), '건 중')]);
-nkTile('t-flagged', (s, w) => [nkBig(NK.mark('span', 'summary', 'flagged', w, String(s.flagged)), NK.node('span', 'nk-unit', '건')),
-  nkSub(s.mode === 'include' ? '지금은 분석에 포함' : '지금은 분석에서 제외')]);
+nkTile('t-flagged', (s, w) => [nkBig(NK.mark('span', 'summary', 'straight', w, String(s.straight)), NK.node('span', 'nk-unit', '건')),
+  nkSub(s.mode === 'include' ? '지금은 분석에 넣음' : '지금은 분석에서 뺌')]);
 nkTile('t-a1', (s, w) => s.a1_score == null ? ['—'] : [nkBig(NK.mark('span', 'summary', 'a1_yes', w, String(s.a1_yes)), NK.node('span', 'nk-unit', `명 / ${s.a1_n}명`)),
   nkSub('환산 ', NK.mark('span', 'summary', 'a1_score', w, String(s.a1_score)), '점 ', NK.chip(s.a1_score))]);
 nkTile('t-alpha', (s, w) => s.alpha == null ? ['계산할 응답이 부족해요'] : [nkBig(NK.mark('span', 'summary', 'alpha', w, s.alpha.toFixed(2)), nkCheck(s.alpha, 0.7)),
-  nkSub('7문항 모두 답한 응답 ', NK.mark('span', 'summary', 'alpha_n', w, String(s.alpha_n)), '건')]);
+  nkSub('5문항 모두 답한 응답 ', NK.mark('span', 'summary', 'alpha_n', w, String(s.alpha_n)), '건')]);
 nkTile('t-r', (s, w) => s.r == null ? ['계산할 응답이 부족해요'] : [nkBig(NK.mark('span', 'summary', 'r', w, s.r.toFixed(2)), nkCheck(s.r, 0.6)),
   nkSub('응답 ', NK.mark('span', 'summary', 'r_n', w, String(s.r_n)), '건')]);
 </script>
