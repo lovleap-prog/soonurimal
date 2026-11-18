@@ -1,0 +1,5 @@
+node_modules/
+out/
+# 실제 학생 응답은 저장소에 올리지 않는다
+data/
+photos/
