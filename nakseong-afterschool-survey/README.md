@@ -17,6 +17,7 @@
 | `form/설문지만들기.gs` | 응답 시트의 Apps Script에 붙여 한 번 실행하면 설문지를 만들고 시트에 연결한다 |
 | `dashboard/index.html` | 교원용 대시보드(Claude Data 아티팩트)의 페이지 원본. 모든 계산식이 들어 있다 |
 | `build_pdf.js` | 학부모·학생 공유용 PDF 생성기 |
+| `build_teacher_pdf.js` | 교원용 결과 보고서(A4 PDF) 생성기. 대시보드의 계산을 그대로 불러 쓴다. `node build_teacher_pdf.js data/students.csv data/responses.json out/교원용.pdf`. 강사 결과와 학생 글이 들어가므로 출력물은 저장소에 올리지 않는다 |
 | `build_qr.js` | 교실용 QR 안내장(A4 1쪽)과 QR 그림(PNG) 생성기. `node build_qr.js <설문 주소> out/QR안내장.pdf [main\|english]` (english: 영어 추가 설문용 문구) |
 | `docs/build_guide_hwpx.py` | 교사용 문항 안내서(HWPX) 생성기. `pip install python-hwpx` 후 `python3 docs/build_guide_hwpx.py out/문항안내.hwpx` |
 | `sample/` | 가상 응답. 응답 시트의 `students`, `responses` 탭과 같은 형식 |
